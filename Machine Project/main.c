@@ -30,7 +30,7 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 	do {
 		printf("\nWhat would you like to buy?\n");
 		printf("[0] Go Back [1-8] Buy Item: ");
-		scanf_s(" %d%*[^\n]", &nItem);
+		scanf(" %d%*[^\n]", &nItem);
 
 		if (nItem > 8) printf("\tInvalid input.");
 	} while (nItem > 8);
@@ -38,7 +38,7 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to buy?\n> ");
-		scanf_s(" %d%*[^\n]", &nAmount);
+		scanf(" %d%*[^\n]", &nAmount);
 
 		if (nAmount >= '0' && nAmount <= '9') nAmount -= '0';
 		if (nAmount < 1) printf("\tInvalid input.\n");
@@ -52,7 +52,7 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 		else do {
 			// Run this only when user has enough GDs.
 			printf("\nAre you sure you want go through with the purchase? [Y]es/[N]o: ");
-			scanf_s(" %c%*[^\n]", &cChoice);
+			scanf(" %c%*[^\n]", &cChoice);
 	
 			// Capitalize user input if lowercase.
 			switch (cChoice) {
@@ -66,7 +66,7 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 		if (cChoice == 'N') {
 			// Go back to "day" menu if user does not want to buy.
 			printf("\nAborting transaction. Type anything to continue.");
-			scanf_s(" %*s");
+			scanf(" %*s");
 		}
 		else {
 			// Subtract the cost from the user GDs, and add 1 of the item they bought to the inventory array.
@@ -78,7 +78,7 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 			displayWideDivider();
 			displayInventory(*pInventory, 0);
 			printf("\nType anything to continue.");
-			scanf_s(" %*s");
+			scanf(" %*s");
 		}
 	}
 }
@@ -106,7 +106,7 @@ void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInven
 	do {
 		printf("What would you like to sell?\n");
 		printf("[0] Go Back [1-8] Sell Item: ");
-		scanf_s(" %d%*[^\n]", &nItem);
+		scanf(" %d%*[^\n]", &nItem);
 
 		if (nItem > 8) printf("\tInvalid input.");
 	} while (nItem > 8);
@@ -114,7 +114,7 @@ void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInven
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to sell?\n> ");
-		scanf_s(" %d%*[^\n]", &nAmount);
+		scanf(" %d%*[^\n]", &nAmount);
 
 		if (nAmount < 0) printf("\tInvalid input.\n");
 		else if (nAmount > (*pInventory)[nItem - 1]) printf("\tYou only have %u of that item.\n", (*pInventory)[nItem - 1]);
@@ -127,7 +127,7 @@ void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInven
 		else do {
 			// Run this only if the user has that item in the wheelhouse.
 			printf("\nAre you sure you want go through with the transaction? [Y]es/[N]o: ");
-			scanf_s(" %c%*[^\n]", &cChoice);
+			scanf(" %c%*[^\n]", &cChoice);
 
 			switch (cChoice) {
 			case 'y': cChoice = 'Y'; break;
@@ -140,7 +140,7 @@ void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInven
 		if (cChoice == 'N') {
 			// Go back to "day" menu if user does not want to sell.
 			printf("\nAborting transaction. Type anything to continue.");
-			scanf_s(" %*s");
+			scanf(" %*s");
 		}
 		else {
 			// Add the cost of the item to the user's GDs and remove 1 item from the inventory.
@@ -152,7 +152,7 @@ void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInven
 			displayWideDivider();
 			displayInventory(*pInventory, 0);
 			printf("\nType anything to continue.");
-			scanf_s(" %*s");
+			scanf(" %*s");
 		}
 	}
 }
@@ -173,7 +173,7 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 	// Ask user what they want to do in the bank until they give a valid input.
 	do {
 		printf("\nChoice: ");
-		scanf_s(" %c%*[^\n]", &cAction);
+		scanf(" %c%*[^\n]", &cAction);
 		
 		// Convert lowercase inputs to uppercase.
 		switch (cAction) {
@@ -193,7 +193,7 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		if (*pGD == 0) printf("You have no Golden Dragons.\n");
 		else {
 			printf("How much do you want to deposit?\n> ");
-			scanf_s(" %d%*[^\n]", &nAmount);
+			scanf(" %d%*[^\n]", &nAmount);
 			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
 			else if (nAmount > *pGD) printf("You do not have that amount of GDs.\n");
 			else {
@@ -203,14 +203,14 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 			}
 		}
 		printf("Type anything to continue.");
-		scanf_s(" %*s");
+		scanf(" %*s");
 		break;
 		// For withdrawing.
 	case 'W':
 		if (*pSavings == 0) printf("You have no Golden Dragons in your savings account.\n");
 		else {
 			printf("How much do you want to withdraw?\n> ");
-			scanf_s(" %d%*[^\n]", &nAmount);
+			scanf(" %d%*[^\n]", &nAmount);
 			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
 			else if (nAmount > *pSavings) printf("You do not have that amount of GDs in your savings account.\n");
 			else {
@@ -220,12 +220,12 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 			}
 		}
 		printf("Type anything to continue.");
-		scanf_s(" %*s");
+		scanf(" %*s");
 		break;
 		// For borrowing.
 	case 'B':
 		printf("How much do you want to borrow?\n> ");
-		scanf_s(" %d%*[^\n]", &nAmount);
+		scanf(" %d%*[^\n]", &nAmount);
 		if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
 		else {
 			*pDebt += nAmount;
@@ -233,14 +233,14 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 			printf("Transaction successful!\n");
 		}
 		printf("Type anything to continue.");
-		scanf_s(" %*s");
+		scanf(" %*s");
 		break;
 	// For paying debt.
 	case 'P':
 		if (*pDebt == 0) printf("You have no outstanding debt.\n> ");
 		else {
 			printf("How much debt do you want to pay?\n");
-			scanf_s(" %d%*[^\n]", &nAmount);
+			scanf(" %d%*[^\n]", &nAmount);
 			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
 			else if (nAmount > *pGD) printf("You do not have that amount of money right now.\n");
 			else if (nAmount > *pDebt) {
@@ -255,7 +255,7 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 			}
 		}
 		printf("Type anything to continue.");
-		scanf_s(" %*s");
+		scanf(" %*s");
 	}
 }
 
@@ -286,7 +286,7 @@ char continueDay(unsigned int nTradingPartner, unsigned int nDays, unsigned int*
 	// Ask for user input until user gives a valid input.
 	do {
 		printf("\nChoice: ");
-		scanf_s(" %c%*[^\n]", &cAction);
+		scanf(" %c%*[^\n]", &cAction);
 
 		switch (cAction) {
 		case 'b': cAction = 'B'; break;
@@ -364,7 +364,7 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 	// Ask for user input once, then if the input is invalid, ask the user for their input again until they give a valid input.
 	do {
 		printf("\nChoice: ");
-		scanf_s(" %d%*[^\n]", &nTradingPartner);
+		scanf(" %d%*[^\n]", &nTradingPartner);
 
 		if (!isValidTradingPartner(nTradingPartner)) printf("\tInvalid input.");
 	} while (!isValidTradingPartner(nTradingPartner));
@@ -382,7 +382,7 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 		// Prompt user if they want to upgrade wheelhouse. Keep asking until they input Y or N.
 		do {
 			printf("\nWould you like to purchase this upgrade?\n[Y]es / [N]o: ");
-			scanf_s(" %c%*[^\n]", &cAvailUpgrade);
+			scanf(" %c%*[^\n]", &cAvailUpgrade);
 
 			// In case user inputs a lowercase letter, use its uppercase equivalent.
 			switch (cAvailUpgrade) {
@@ -405,13 +405,13 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 			printf("\nSuccessfully upgraded your wheelhouse!\n");
 			displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
 			printf("\nType anything to continue.");
-			scanf_s(" %*s");
+			scanf(" %*s");
 			break;
 		case 'N':
 			printf("\nTransaction declined! Your wheelhouse's capacity remains the same.\n");
 			displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
 			printf("\nType anything to continue.");
-			scanf_s(" %*s");
+			scanf(" %*s");
 		}
 	}
 
@@ -436,7 +436,7 @@ int main() {
 	// Display instructions and await user input.
 	displayInstructions();
 	printf("\n\nOnce you understand the game, please type anything to go to the first kingdom!\n> ");
-	scanf_s(" %*s");
+	scanf(" %*s");
 
 	clearscr();
 	
@@ -458,7 +458,7 @@ int main() {
 	displayWideDivider();
 	displayInventory(nInventory, 0);
 	printf("\nType anything to end the game.");
-	scanf_s(" %*s");
+	scanf(" %*s");
 
 	return 0;
 }
