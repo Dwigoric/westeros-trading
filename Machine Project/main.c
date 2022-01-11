@@ -16,7 +16,8 @@
 */
 void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigned int (*pInventory)[8]) {
 	unsigned int nCost;
-	char cItem, cAmount, cChoice = 'N';
+	int nItem, nAmount;
+	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
 	displayWideDivider();
@@ -29,24 +30,23 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 	do {
 		printf("\nWhat would you like to buy?\n");
 		printf("[0] Go Back [1-8] Buy Item: ");
-		scanf_s(" %c%*[^\n]", &cItem);
+		scanf_s(" %d%*[^\n]", &nItem);
 
-		convertDigitCharToInt(&cItem);
-		if (cItem > 8) printf("\tInvalid input.");
-	} while (cItem > 8);
+		if (nItem > 8) printf("\tInvalid input.");
+	} while (nItem > 8);
 
 	// Ask user how many they want to buy.
-	if (cItem >= 1 && cItem <= 8) do {
+	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to buy?\n> ");
-		scanf_s(" %d%*[^\n]", &cAmount);
+		scanf_s(" %d%*[^\n]", &nAmount);
 
-		if (cAmount >= '0' && cAmount <= '9') cAmount -= '0';
-		if (cAmount < 1) printf("\tInvalid input.\n");
-		else if (cAmount > nCapacity - (*pInventory)[cItem - 1]) printf("\tBuying %d of this item will exceed your wheelhouse's capacity.\n", cAmount);
-	} while (cAmount < 1 || cAmount > nCapacity - (*pInventory)[cItem - 1]);
+		if (nAmount >= '0' && nAmount <= '9') nAmount -= '0';
+		if (nAmount < 1) printf("\tInvalid input.\n");
+		else if (nAmount > nCapacity - (*pInventory)[nItem - 1]) printf("\tBuying %d of this item will exceed your wheelhouse's capacity.\n", nAmount);
+	} while (nAmount < 1 || nAmount > nCapacity - (*pInventory)[nItem - 1]);
 
-	if (cItem >= 1 && cItem <= 8) {
-		nCost = getCost(nTradingPartner, cItem, cAmount);
+	if (nItem >= 1 && nItem <= 8) {
+		nCost = getCost(nTradingPartner, nItem, nAmount);
 		printf("\nThat item costs %u Golden Dragons.", nCost);
 		if (*pGD < nCost) printf("\nYou do not have enough Golden Dragons.");
 		else do {
@@ -71,7 +71,7 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 		else {
 			// Subtract the cost from the user GDs, and add 1 of the item they bought to the inventory array.
 			*pGD -= nCost;
-			(*pInventory)[cItem - 1] += cAmount;
+			(*pInventory)[nItem - 1] += nAmount;
 
 			clearscr();
 			printf("Bought item successfully!\n");
@@ -92,8 +92,8 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 */
 void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8]) {
 	unsigned int nCost;
-	int nAmount;
-	char cItem, cChoice = 'N';
+	int nAmount, nItem;
+	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
 	displayWideDivider();
@@ -106,25 +106,24 @@ void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInven
 	do {
 		printf("What would you like to sell?\n");
 		printf("[0] Go Back [1-8] Sell Item: ");
-		scanf_s(" %c%*[^\n]", &cItem);
+		scanf_s(" %d%*[^\n]", &nItem);
 
-		convertDigitCharToInt(&cItem);
-		if (cItem > 8) printf("\tInvalid input.");
-	} while (cItem > 8);
+		if (nItem > 8) printf("\tInvalid input.");
+	} while (nItem > 8);
 
 	// Ask user how many they want to buy.
-	if (cItem >= 1 && cItem <= 8) do {
+	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to sell?\n> ");
 		scanf_s(" %d%*[^\n]", &nAmount);
 
 		if (nAmount < 0) printf("\tInvalid input.\n");
-		else if (nAmount > (*pInventory)[cItem - 1]) printf("\tYou only have %u of that item.\n", (*pInventory)[cItem - 1]);
-	} while (nAmount < 0 || nAmount > (*pInventory)[cItem - 1]);
+		else if (nAmount > (*pInventory)[nItem - 1]) printf("\tYou only have %u of that item.\n", (*pInventory)[nItem - 1]);
+	} while (nAmount < 0 || nAmount > (*pInventory)[nItem - 1]);
 
-	if (cItem >= 1 && cItem <= 8) {
-		nCost = getCost(nTradingPartner, cItem, nAmount);
+	if (nItem >= 1 && nItem <= 8) {
+		nCost = getCost(nTradingPartner, nItem, nAmount);
 		printf("\nThe trading partner is willing to trade %u GDs for that item.", nCost);
-		if ((*pInventory)[cItem - 1] == 0) printf("\nYou do not have that item in your wheelhouse.");
+		if ((*pInventory)[nItem - 1] == 0) printf("\nYou do not have that item in your wheelhouse.");
 		else do {
 			// Run this only if the user has that item in the wheelhouse.
 			printf("\nAre you sure you want go through with the transaction? [Y]es/[N]o: ");
@@ -146,7 +145,7 @@ void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInven
 		else {
 			// Add the cost of the item to the user's GDs and remove 1 item from the inventory.
 			*pGD += nCost;
-			(*pInventory)[cItem - 1] -= nAmount;
+			(*pInventory)[nItem - 1] -= nAmount;
 
 			clearscr();
 			printf("Sold item successfully!\n");
@@ -352,8 +351,8 @@ char continueDay(unsigned int nTradingPartner, unsigned int nDays, unsigned int*
 	@return 'W' if the user rode the wheelhouse, 'Y' if the user wants to quit the game.
 */
 char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsigned int* pSavings, unsigned int* pCapacity, unsigned int (*pInventory)[8]) {
-	char cTradingPartner,
-		 cAvailUpgrade,
+	int nTradingPartner;
+	char cAvailUpgrade,
 		 cQuitGame = 'N'; // cQuitGame == 'N' means user has not quit the game (default), otherwise this is 'Y'
 
 	clearscr();
@@ -365,14 +364,13 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 	// Ask for user input once, then if the input is invalid, ask the user for their input again until they give a valid input.
 	do {
 		printf("\nChoice: ");
-		scanf_s(" %c%*[^\n]", &cTradingPartner);
+		scanf_s(" %d%*[^\n]", &nTradingPartner);
 
-		convertDigitCharToInt(&cTradingPartner);
-		if (!isValidTradingPartner(cTradingPartner)) printf("\tInvalid input.");
-	} while (!isValidTradingPartner(cTradingPartner));
+		if (!isValidTradingPartner(nTradingPartner)) printf("\tInvalid input.");
+	} while (!isValidTradingPartner(nTradingPartner));
 
 	// Since input 9 means quitting the game, assign the character 'Y' to cQuitGame to indicate that the user has quit the game.
-	if (cTradingPartner == 9) cQuitGame = 'Y';
+	if (nTradingPartner == 9) cQuitGame = 'Y';
 
 	clearscr();
 
@@ -418,7 +416,7 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 	}
 
 	// If user has not yet quit the game or ridden the Wheelhouse, continue the day.
-	while (cQuitGame == 'N') cQuitGame = continueDay(cTradingPartner, nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
+	while (cQuitGame == 'N') cQuitGame = continueDay(nTradingPartner, nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
 
 	return cQuitGame;
 }

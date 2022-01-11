@@ -27,15 +27,6 @@ unsigned int arraySummation(unsigned int nArray[8]) {
 	return sum;
 }
 
-/*
-	Convert digit characters to integers.
-
-	@param cChar - Pointer to the character to be converted.
-*/
-void convertDigitCharToInt(char* cChar) {
-	if (*cChar >= 0 && *cChar <= 9) *cChar += 10;
-	if (*cChar >= '0' && *cChar <= '9') *cChar -= '0';
-}
 
 /*
 	A function that determines validity of the trading partner.
