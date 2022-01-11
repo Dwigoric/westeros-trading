@@ -40,7 +40,6 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 		printf("\nHow many would you like to buy?\n> ");
 		scanf(" %d%*[^\n]", &nAmount);
 
-		if (nAmount >= '0' && nAmount <= '9') nAmount -= '0';
 		if (nAmount < 1) printf("\tInvalid input.\n");
 		else if (nAmount > nCapacity - (*pInventory)[nItem - 1]) printf("\tBuying %d of this item will exceed your wheelhouse's capacity.\n", nAmount);
 	} while (nAmount < 1 || nAmount > nCapacity - (*pInventory)[nItem - 1]);
