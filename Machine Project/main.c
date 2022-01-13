@@ -14,7 +14,7 @@
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
 */
-void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigned int (*pInventory)[8]) {
+void buy(int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigned int (*pInventory)[8]) {
 	unsigned int nCost;
 	int nItem, nAmount;
 	char cChoice = 'N';
@@ -89,7 +89,7 @@ void buy(unsigned int nTradingPartner, unsigned int nCapacity, unsigned int* pGD
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
 */
-void sell(unsigned int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8]) {
+void sell(int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8]) {
 	unsigned int nCost;
 	int nAmount, nItem;
 	char cChoice = 'N';
@@ -271,7 +271,7 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 
 	@return 'Y' if the user wants to quit the game, 'N' if the day continues, 'W' if the user wants to ride the wheelhouse.
 */
-char continueDay(unsigned int nTradingPartner, unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsigned int* pSavings, unsigned int* pCapacity, unsigned int (*pInventory)[8]) {
+char continueDay(int nTradingPartner, unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsigned int* pSavings, unsigned int* pCapacity, unsigned int (*pInventory)[8]) {
 	char cAction, cQuitGame = 'N';
 
 	clearscr();
