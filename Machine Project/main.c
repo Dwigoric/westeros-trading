@@ -30,7 +30,10 @@ void buy(int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigne
 	do {
 		printf("\nWhat would you like to buy?\n");
 		printf("[0] Go Back [1-8] Buy Item: ");
-		scanf(" %d%*[^\n]", &nItem);
+		if (!scanf(" %d%*[^\n]", &nItem)) {
+			nItem = 10;
+			scanf(" %*s");
+		}
 
 		if (nItem > 8) printf("\tInvalid input.");
 	} while (nItem > 8);
@@ -38,7 +41,10 @@ void buy(int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigne
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to buy?\n> ");
-		scanf(" %d%*[^\n]", &nAmount);
+		if (!scanf(" %d%*[^\n]", &nAmount)) {
+			nAmount = 0;
+			scanf(" %*s");
+		}
 
 		if (nAmount < 1) printf("\tInvalid input.\n");
 		else if (nAmount > nCapacity - (*pInventory)[nItem - 1]) printf("\tBuying %d of this item will exceed your wheelhouse's capacity.\n", nAmount);
@@ -105,7 +111,10 @@ void sell(int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8])
 	do {
 		printf("What would you like to sell?\n");
 		printf("[0] Go Back [1-8] Sell Item: ");
-		scanf(" %d%*[^\n]", &nItem);
+		if (!scanf(" %d%*[^\n]", &nItem)) {
+			nItem = 10;
+			scanf(" %*s");
+		}
 
 		if (nItem > 8) printf("\tInvalid input.");
 	} while (nItem > 8);
@@ -113,9 +122,12 @@ void sell(int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8])
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to sell?\n> ");
-		scanf(" %d%*[^\n]", &nAmount);
+		if (!scanf(" %d%*[^\n]", &nAmount)) {
+			nAmount = 0;
+			scanf(" %*s");
+		}
 
-		if (nAmount < 0) printf("\tInvalid input.\n");
+		if (nAmount < 1) printf("\tInvalid input.\n");
 		else if (nAmount > (*pInventory)[nItem - 1]) printf("\tYou only have %u of that item.\n", (*pInventory)[nItem - 1]);
 	} while (nAmount < 0 || nAmount > (*pInventory)[nItem - 1]);
 
@@ -192,8 +204,11 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		if (*pGD == 0) printf("You have no Golden Dragons.\n");
 		else {
 			printf("How much do you want to deposit?\n> ");
-			scanf(" %d%*[^\n]", &nAmount);
-			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
+			if (!scanf(" %d%*[^\n]", &nAmount)) {
+				nAmount = -1;
+				scanf(" %*s");
+			}
+			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
 			else if (nAmount > *pGD) printf("You do not have that amount of GDs.\n");
 			else {
 				*pSavings += nAmount;
@@ -209,8 +224,11 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		if (*pSavings == 0) printf("You have no Golden Dragons in your savings account.\n");
 		else {
 			printf("How much do you want to withdraw?\n> ");
-			scanf(" %d%*[^\n]", &nAmount);
-			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
+			if (!scanf(" %d%*[^\n]", &nAmount)) {
+				nAmount = -1;
+				scanf(" %*s");
+			}
+			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
 			else if (nAmount > *pSavings) printf("You do not have that amount of GDs in your savings account.\n");
 			else {
 				*pGD += nAmount;
@@ -224,8 +242,11 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		// For borrowing.
 	case 'B':
 		printf("How much do you want to borrow?\n> ");
-		scanf(" %d%*[^\n]", &nAmount);
-		if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
+		if (!scanf(" %d%*[^\n]", &nAmount)) {
+			nAmount = -1;
+			scanf(" %*s");
+		}
+		if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
 		else {
 			*pDebt += nAmount;
 			*pGD += nAmount;
@@ -239,8 +260,11 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		if (*pDebt == 0) printf("You have no outstanding debt.\n> ");
 		else {
 			printf("How much debt do you want to pay?\n");
-			scanf(" %d%*[^\n]", &nAmount);
-			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number or a number too large.\n");
+			if (!scanf(" %d%*[^\n]", &nAmount)) {
+				nAmount = -1;
+				scanf(" %*s");
+			}
+			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
 			else if (nAmount > *pGD) printf("You do not have that amount of money right now.\n");
 			else if (nAmount > *pDebt) {
 				printf("You only owe %u GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
@@ -363,7 +387,10 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 	// Ask for user input once, then if the input is invalid, ask the user for their input again until they give a valid input.
 	do {
 		printf("\nChoice: ");
-		scanf(" %d%*[^\n]", &nTradingPartner);
+		if (!scanf(" %d%*[^\n]", &nTradingPartner)) {
+			nTradingPartner = 10;
+			scanf(" %*s");
+		}
 
 		if (!isValidTradingPartner(nTradingPartner)) printf("\tInvalid input.");
 	} while (!isValidTradingPartner(nTradingPartner));
