@@ -19,10 +19,10 @@ int allowWheelhouseUpgrade() {
 /*
 	Function to get summation of an integer array with 8 values.
 
-	@param nArray - The array of unsigned integers with 8 values.
+	@param nArray - The array of integers with 8 values.
 */
-unsigned int arraySummation(unsigned int nArray[8]) {
-	unsigned int sum = 0;
+int arraySummation(int nArray[8]) {
+	int sum = 0;
 	for (int n = 0; n < 8; n++) sum += nArray[n]; // Since arrays start at index 0, the array is looped from 0-7.
 	return sum;
 }
@@ -104,12 +104,14 @@ int isValidBankAction(char cAction) {
 
 	@return The cost of the item. If one of the parameters is invalid, the returned value is 0.
 */
-unsigned int getCost(int nTradingPartner, unsigned int nItem, int nAmount) {
-	unsigned int nCost = 0;
+int getCost(int nTradingPartner, int nItem, int nAmount) {
+	int nCost = 0;
+
+	// Subtract 1 from nItem since it will be used as the array index.
 	nItem -= 1;
 
 	// Use arrays for easier reference.
-	unsigned int
+	int
 	nWinterfell[8] = {
 		WINTERFELL_SWEET_BEET,
 		WINTERFELL_TIMBER,

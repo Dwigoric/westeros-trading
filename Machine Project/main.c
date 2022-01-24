@@ -14,9 +14,8 @@
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
 */
-void buy(int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigned int (*pInventory)[8]) {
-	unsigned int nCost;
-	int nItem, nAmount;
+void buy(int nTradingPartner, int nCapacity, float* pGD, int (*pInventory)[8]) {
+	int nCost, nItem, nAmount;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
@@ -52,7 +51,7 @@ void buy(int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigne
 
 	if (nItem >= 1 && nItem <= 8) {
 		nCost = getCost(nTradingPartner, nItem, nAmount);
-		printf("\nThat item costs %u Golden Dragons.", nCost);
+		printf("\nThat item costs %d Golden Dragons.", nCost);
 		if (*pGD < nCost) printf("\nYou do not have enough Golden Dragons.");
 		else do {
 			// Run this only when user has enough GDs.
@@ -95,9 +94,8 @@ void buy(int nTradingPartner, unsigned int nCapacity, unsigned int* pGD, unsigne
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
 */
-void sell(int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8]) {
-	unsigned int nCost;
-	int nAmount, nItem;
+void sell(int nTradingPartner, float* pGD, int (*pInventory)[8]) {
+	int nCost, nAmount, nItem;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
@@ -128,12 +126,12 @@ void sell(int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8])
 		}
 
 		if (nAmount < 1) printf("\tInvalid input.\n");
-		else if (nAmount > (*pInventory)[nItem - 1]) printf("\tYou only have %u of that item.\n", (*pInventory)[nItem - 1]);
+		else if (nAmount > (*pInventory)[nItem - 1]) printf("\tYou only have %d of that item.\n", (*pInventory)[nItem - 1]);
 	} while (nAmount < 0 || nAmount > (*pInventory)[nItem - 1]);
 
 	if (nItem >= 1 && nItem <= 8) {
 		nCost = getCost(nTradingPartner, nItem, nAmount);
-		printf("\nThe trading partner is willing to trade %u GDs for that item.", nCost);
+		printf("\nThe trading partner is willing to trade %d GDs for that item.", nCost);
 		if ((*pInventory)[nItem - 1] == 0) printf("\nYou do not have that item in your wheelhouse.");
 		else do {
 			// Run this only if the user has that item in the wheelhouse.
@@ -175,9 +173,9 @@ void sell(int nTradingPartner, unsigned int* pGD, unsigned int (*pInventory)[8])
 	@param nSavings - Pointer to the memory address of the variable holding the user's savings.
 	@param nDebt - Pointer to the memory address of the variable holding the user's debt to the bank.
 */
-void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSavings) {
+void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	char cAction;
-	int nAmount;
+	float fAmount;
 
 	displayBankMenu(*pGD, *pSavings, *pDebt);
 
@@ -201,18 +199,19 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 	switch (cAction) {
 		// For depositing.
 	case 'D':
-		if (*pGD == 0) printf("You have no Golden Dragons.\n");
+		if (*pGD == 0.0) printf("You have no Golden Dragons.\n");
 		else {
 			printf("How much do you want to deposit?\n> ");
-			if (!scanf(" %d%*[^\n]", &nAmount)) {
-				nAmount = -1;
+			if (!scanf(" %f%*[^\n]", &fAmount)) {
+				fAmount = -1.0;
 				scanf(" %*s");
 			}
-			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
-			else if (nAmount > *pGD) printf("You do not have that amount of GDs.\n");
+
+			if (fAmount < 0.0) printf("\tInvalid input.\n");
+			else if (fAmount > *pGD) printf("You do not have that amount of GDs.\n");
 			else {
-				*pSavings += nAmount;
-				*pGD -= nAmount;
+				*pSavings += fAmount;
+				*pGD -= fAmount;
 				printf("Transaction successful!\n");
 			}
 		}
@@ -224,16 +223,17 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		if (*pSavings == 0) printf("You have no Golden Dragons in your savings account.\n");
 		else {
 			printf("How much do you want to withdraw?\n> ");
-			if (!scanf(" %d%*[^\n]", &nAmount)) {
-				nAmount = -1;
+			if (!scanf(" %f%*[^\n]", &fAmount)) {
+				fAmount = -1.0;
 				scanf(" %*s");
 			}
-			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
-			else if (nAmount > *pSavings) printf("You do not have that amount of GDs in your savings account.\n");
+
+			if (fAmount < 0.0) printf("\tInvalid input.\n");
+			else if (fAmount > *pSavings) printf("You do not have that amount of GDs in your savings account.\n");
 			else {
-				*pGD += nAmount;
-				*pSavings -= nAmount;
-				printf("Transaction successfull!\n> ");
+				*pGD += fAmount;
+				*pSavings -= fAmount;
+				printf("Transaction successfull!\n");
 			}
 		}
 		printf("Type anything to continue.");
@@ -242,14 +242,15 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		// For borrowing.
 	case 'B':
 		printf("How much do you want to borrow?\n> ");
-		if (!scanf(" %d%*[^\n]", &nAmount)) {
-			nAmount = -1;
+		if (!scanf(" %f%*[^\n]", &fAmount)) {
+			fAmount = -1.0;
 			scanf(" %*s");
 		}
-		if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
+
+		if (fAmount < 0.0) printf("\tInvalid input.\n");
 		else {
-			*pDebt += nAmount;
-			*pGD += nAmount;
+			*pDebt += fAmount;
+			*pGD += fAmount;
 			printf("Transaction successful!\n");
 		}
 		printf("Type anything to continue.");
@@ -257,23 +258,24 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 		break;
 	// For paying debt.
 	case 'P':
-		if (*pDebt == 0) printf("You have no outstanding debt.\n> ");
+		if (*pDebt == 0.0) printf("You have no outstanding debt.\n> ");
 		else {
 			printf("How much debt do you want to pay?\n");
-			if (!scanf(" %d%*[^\n]", &nAmount)) {
-				nAmount = -1;
+			if (!scanf(" %f%*[^\n]", &fAmount)) {
+				fAmount = -1.0;
 				scanf(" %*s");
 			}
-			if (nAmount < 0) printf("\tInvalid input: You either entered a negative number, a number too large, or a non-numerical input.\n");
-			else if (nAmount > *pGD) printf("You do not have that amount of money right now.\n");
-			else if (nAmount > *pDebt) {
-				printf("You only owe %u GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
+
+			if (fAmount < 0.0) printf("\tInvalid input.\n");
+			else if (fAmount > *pGD) printf("You do not have that amount of money right now.\n");
+			else if (fAmount > *pDebt) {
+				printf("You only owe %d GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
 				*pGD -= *pDebt;
-				*pDebt = 0;
+				*pDebt = 0.0;
 			}
 			else {
-				*pDebt -= nAmount;
-				*pGD -= nAmount;
+				*pDebt -= fAmount;
+				*pGD -= fAmount;
 				printf("Transaction successful!\n");
 			}
 		}
@@ -295,7 +297,7 @@ void transactWithBank(unsigned int* pGD, unsigned int* pDebt, unsigned int* pSav
 
 	@return 'Y' if the user wants to quit the game, 'N' if the day continues, 'W' if the user wants to ride the wheelhouse.
 */
-char continueDay(int nTradingPartner, unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsigned int* pSavings, unsigned int* pCapacity, unsigned int (*pInventory)[8]) {
+char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8]) {
 	char cAction, cQuitGame = 'N';
 
 	clearscr();
@@ -373,7 +375,7 @@ char continueDay(int nTradingPartner, unsigned int nDays, unsigned int* pGD, uns
 
 	@return 'W' if the user rode the wheelhouse, 'Y' if the user wants to quit the game.
 */
-char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsigned int* pSavings, unsigned int* pCapacity, unsigned int (*pInventory)[8]) {
+char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8]) {
 	int nTradingPartner;
 	char cAvailUpgrade,
 		 cQuitGame = 'N'; // cQuitGame == 'N' means user has not quit the game (default), otherwise this is 'Y'
@@ -417,7 +419,7 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 			}
 
 			// Check if user wants to upgrade and their balance is enough.
-			if (cAvailUpgrade == 'Y' && *pGD <= 200) {
+			if (cAvailUpgrade == 'Y' && *pGD <= 200.0) {
 				printf("\tYou have insufficient balance. The merchant has already left.");
 				cAvailUpgrade = 'N';
 			}
@@ -426,7 +428,7 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 		// Run specific logics based on user's choice.
 		switch (cAvailUpgrade) {
 		case 'Y':
-			*pGD -= 200;
+			*pGD -= 200.0;
 			*pCapacity += 50;
 			printf("\nSuccessfully upgraded your wheelhouse!\n");
 			displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
@@ -452,10 +454,10 @@ char startDay(unsigned int nDays, unsigned int* pGD, unsigned int* pDebt, unsign
 */
 int main() {
 	char cQuitGame;
-	unsigned int nDays = 15,
-		nGD = 2000,
-		nDebt = 0,
-		nSavings = 0,
+	float fGD = 2000.0,
+		fDebt = 0.0,
+		fSavings = 0.0;
+	int nDays = 15,
 		nCapacity = 50,
 		nInventory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -468,18 +470,18 @@ int main() {
 	
 	// Run the game logic. Call startDay() in a loop; 1 loop = 1 day.
 	do {
-		cQuitGame = startDay(nDays, &nGD, &nDebt, &nSavings, &nCapacity, &nInventory);
+		cQuitGame = startDay(nDays, &fGD, &fDebt, &fSavings, &nCapacity, &nInventory);
 		if (cQuitGame != 'Y') {
 			nDays--;
 			// Run bank's daily interest
-			nSavings += nSavings / 10;
-			nDebt += nDebt / 20;
+			fSavings += fSavings / 10;
+			fDebt += fDebt / 20;
 		}
 	} while (nDays >= 1 && cQuitGame == 'W');
 
 	// Once user quits the game or reaches the 15-day limit, display trading stats and inventory.
 	printf("Thank you for playing! Here are your statistics after the game.\n");
-	displayTrading(nDays, nGD, nDebt, nSavings, nCapacity, nInventory);
+	displayTrading(nDays, fGD, fDebt, fSavings, nCapacity, nInventory);
 	printf("POST-GAME INVENTORY\n");
 	displayWideDivider();
 	displayInventory(nInventory, 0);

@@ -87,8 +87,8 @@ void displayOpeningScreen() {
 	@param nQohorikTapestry - The price of qohorik tapestry.
 	@param nValyrianSteel - The price of valyrian steel.
 */
-void displayWaresAndGoods(unsigned int nSweetBeet, unsigned int nTimber, unsigned int nIntricateLace, unsigned int nIntoxicatingPerfume,
-						  unsigned int nPaleAmberWine, unsigned int nMyrishEye, unsigned int nQohorikTapestry, unsigned int nValyrianSteel)
+void displayWaresAndGoods(int nSweetBeet, int nTimber, int nIntricateLace, int nIntoxicatingPerfume,
+						  int nPaleAmberWine, int nMyrishEye, int nQohorikTapestry, int nValyrianSteel)
 {
 	displayWideDivider();
 	printf("ITEM\t\tWARES AND GOODS\t\t\tSELLING/BUYING PRICE\n");
@@ -158,18 +158,18 @@ void displayPartnerSales(int nTradingPartner) {
 	Displays the current status of trading of the user.
 
 	@param nDays - The amount of days left.
-	@param nGD - The amount of golden dragons the user has.
-	@param nDebt - The amount of debt, in GD, to the Iron Bank of Braavos.
-	@param nSavings - Savings, in GD, in the Iron Bank of Braavos.
+	@param fGD - The amount of golden dragons the user has.
+	@param fDebt - The amount of debt, in GD, to the Iron Bank of Braavos.
+	@param fSavings - Savings, in GD, in the Iron Bank of Braavos.
 	@param nCapacity - Maximum capacity of the wheelhouse.
 	@param nInventory - The array of goods in the wheelhouse.
 */
-void displayTrading(unsigned int nDays, unsigned int nGD, unsigned int nDebt, unsigned int nSavings, unsigned int nCapacity, unsigned int nInventory[8]) {
+void displayTrading(int nDays, float fGD, float fDebt, float fSavings, int nCapacity, int nInventory[8]) {
 	displayWideDivider();
 	printf("Days Remaining:\t\t%u Days\n", nDays);
-	printf("GD:\t\t\t%u\n", nGD);
-	printf("Debt:\t\t\t%u\n", nDebt);
-	printf("Savings:\t\t%u\n", nSavings);
+	printf("GD:\t\t\t%.2f\n", fGD);
+	printf("Debt:\t\t\t%.2f\n", fDebt);
+	printf("Savings:\t\t%.2f\n", fSavings);
 	printf("Capacity:\t\t%u / %u\n", arraySummation(nInventory), nCapacity);
 	displayWideDivider();
 }
@@ -180,7 +180,7 @@ void displayTrading(unsigned int nDays, unsigned int nGD, unsigned int nDebt, un
 	@param nInventory - The array holding the player inventory.
 	@param nFilter - Whether to filter to list what the wheelhouse contains.
 */
-void displayInventory(unsigned int nInventory[8], int nFilter) {
+void displayInventory(int nInventory[8], int nFilter) {
 	printf("\t\t\tWHEELHOUSE INVENTORY\n");
 	displayWideDivider();
 	if (!nFilter || nInventory[0] > 0) printf("[1] Sweet Beet\t\t\t%u\n", nInventory[0]);
@@ -196,20 +196,20 @@ void displayInventory(unsigned int nInventory[8], int nFilter) {
 /*
 	Function used to display the menu screen of the Iron Bank of Braavos.
 
-	@param nGD - Amount of GDs user has.
-	@param nSavings - Amount of GDs in user's savings account.
-	@param nDebt - How much GDs user owes the Bank.
+	@param fGD - Amount of GDs user has.
+	@param fSavings - Amount of GDs in user's savings account.
+	@param fDebt - How much GDs user owes the Bank.
 */
-void displayBankMenu(unsigned int nGD, unsigned int nSavings, unsigned int nDebt) {
+void displayBankMenu(float fGD, float fSavings, float fDebt) {
 	displayWideDivider();
 	printf("\t\t\tIRON BANK OF BRAAVOS\n");
 	displayWideDivider();
 	printf("Welcome to the Iron Bank of Braavos! How can we help you today?\n");
 	displayWideDivider();
 	printf("You have the following financial status:\n\n");
-	printf("Golden Dragons\t\t%u\n", nGD);
-	printf("Savings\t\t\t%u\n", nSavings);
-	printf("Debt\t\t\t%u\n", nDebt);
+	printf("Golden Dragons\t\t%.2f\n", fGD);
+	printf("Savings\t\t\t%.2f\n", fSavings);
+	printf("Debt\t\t\t%.2f\n", fDebt);
 	displayWideDivider();
 	printf("[D]eposit GDs\n[W]ithdraw GDs\n[B]orrow GDs\n[P]ay Debt\n\n[X] Go Back\n");
 }
