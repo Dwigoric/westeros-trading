@@ -269,7 +269,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 			else if (fAmount > *pGD) printf("You do not have that amount of money right now.\n");
 			else if (fAmount > *pDebt) {
-				printf("You only owe %d GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
+				printf("You only owe %.2f GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
 				*pGD -= *pDebt;
 				*pDebt = 0.0;
 			}
@@ -294,7 +294,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	@param pCapacity - Pointer to the memory address of the variable holding the wheelhouse capacity.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
 */
-void promptWheelhouseUpgrade(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int* pInventory) {
+void promptWheelhouseUpgrade(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8]) {
 	char cAvailUpgrade;
 
 	printf("A merchant has offered you to upgrade your wheelhouse's capacity by 50! This upgrade costs 200 GD.\n\nCurrent status:\n");
