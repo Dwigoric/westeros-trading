@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include "constants.h"
 #include "sublogic.h"
 
@@ -16,11 +16,11 @@ void clearscr() {
 }
 
 /*
-	A function used to display 68 dashes in order to form a divider.
+	A function used to display 68 equal signs in order to form a divider.
 */
 void displayWideDivider() {
-	// A for-loop is used to print a dash 68 times.
-	for (char i = 1; i <= 68; i++) printf("-");
+	// A for-loop is used to print an equal sign 68 times.
+	for (char i = 1; i <= 68; i++) printf("=");
 
 	printf("\n");
 }
@@ -29,9 +29,14 @@ void displayWideDivider() {
 	A function used to explain to the user how the game works.
 */
 void displayInstructions() {
-	displayWideDivider();
-	printf("\t\t\tWELCOME TO WESTEROS\n");
-	displayWideDivider();
+	printf(" ___       __   _______   ________  _________  _______   ________  ________  ________  \n");
+	printf("|\\  \\     |\\  \\|\\  ___ \\ |\\   ____\\|\\___   ___\\\\  ___ \\ |\\   __  \\|\\   __  \\|\\   ____\\ \n");
+	printf("\\ \\  \\    \\ \\  \\ \\   __/|\\ \\  \\___|\\|___ \\  \\_\\ \\   __/|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\___|_    \n");
+	printf(" \\ \\  \\  __\\ \\  \\ \\  \\_|/_\\ \\_____  \\   \\ \\  \\ \\ \\  \\_|/_\\ \\   _  _\\ \\  \\\\\\  \\ \\_____  \   \n");
+	printf("  \\ \\  \\|\\__\\_\\  \\ \\  \\_|\\ \\|____|\\  \\   \\ \\  \\ \\ \\  \\_|\\ \\ \\  \\\\  \\\\ \\  \\\\\\  \\|____|\\  \\  \n");
+	printf("   \\ \\____________\\ \\_______\\____\\_\\  \\   \\ \\__\\ \\ \\_______\\ \\__\\\\ _\\\\ \\_______\\____\\_\\  \\ \n");
+	printf("    \\|____________|\\|_______|\\_________\\   \\|__|  \\|_______|\\|__|\\|__|\\|_______|\\_________\\\n");
+	printf("                            \\|_________|                                       \\|_________|\n\n");
 	printf("\nAfter being handed the Iron Throne, King Bran of House Stark, decided to devise a\n");
 	printf("strategic plan to improve the economic growth of the Six Kingdoms. The Royal Treasury\n");
 	printf("currently has 2,000 Golden Dragons (GDs) only. To accomplish this task, he instructed\n");
