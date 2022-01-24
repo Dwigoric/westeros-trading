@@ -69,8 +69,8 @@ void buy(int nTradingPartner, int nCapacity, float* pGD, int (*pInventory)[8]) {
 	
 		if (cChoice == 'N') {
 			// Go back to "day" menu if user does not want to buy.
-			printf("\nAborting transaction. Type anything to continue.");
-			scanf(" %*s");
+			printf("\nAborting transaction. Press ENTER to continue.");
+			scanf("%*c%*[^\n]");
 		}
 		else {
 			// Subtract the cost from the user GDs, and add 1 of the item they bought to the inventory array.
@@ -81,8 +81,8 @@ void buy(int nTradingPartner, int nCapacity, float* pGD, int (*pInventory)[8]) {
 			printf("Bought item successfully!\n");
 			displayWideDivider();
 			displayInventory(*pInventory, 0);
-			printf("\nType anything to continue.");
-			scanf(" %*s");
+			printf("\nPress ENTER to continue.");
+			scanf("%*c%*[^\n]");
 		}
 	}
 }
@@ -148,8 +148,8 @@ void sell(int nTradingPartner, float* pGD, int (*pInventory)[8]) {
 
 		if (cChoice == 'N') {
 			// Go back to "day" menu if user does not want to sell.
-			printf("\nAborting transaction. Type anything to continue.");
-			scanf(" %*s");
+			printf("\nAborting transaction. Press ENTER to continue.");
+			scanf("%*c%*[^\n]");
 		}
 		else {
 			// Add the cost of the item to the user's GDs and remove 1 item from the inventory.
@@ -160,8 +160,8 @@ void sell(int nTradingPartner, float* pGD, int (*pInventory)[8]) {
 			printf("Sold item successfully!\n");
 			displayWideDivider();
 			displayInventory(*pInventory, 0);
-			printf("\nType anything to continue.");
-			scanf(" %*s");
+			printf("\nPress ENTER to continue.");
+			scanf("%*c%*[^\n]");
 		}
 	}
 }
@@ -215,8 +215,8 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 				printf("Transaction successful!\n");
 			}
 		}
-		printf("Type anything to continue.");
-		scanf(" %*s");
+		printf("\nPress ENTER to continue.");
+		scanf("%*c%*[^\n]");
 		break;
 		// For withdrawing.
 	case 'W':
@@ -236,8 +236,8 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 				printf("Transaction successfull!\n");
 			}
 		}
-		printf("Type anything to continue.");
-		scanf(" %*s");
+		printf("\nPress ENTER to continue.");
+		scanf("%*c%*[^\n]");
 		break;
 		// For borrowing.
 	case 'B':
@@ -253,8 +253,8 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 			*pGD += fAmount;
 			printf("Transaction successful!\n");
 		}
-		printf("Type anything to continue.");
-		scanf(" %*s");
+		printf("\nPress ENTER to continue.");
+		scanf("%*c%*[^\n]");
 		break;
 	// For paying debt.
 	case 'P':
@@ -279,8 +279,8 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 				printf("Transaction successful!\n");
 			}
 		}
-		printf("Type anything to continue.");
-		scanf(" %*s");
+		printf("\nPress ENTER to continue.");
+		scanf("%*c%*[^\n]");
 	}
 }
 
@@ -325,14 +325,14 @@ void promptWheelhouseUpgrade(int nDays, float* pGD, float* pDebt, float* pSaving
 		*pCapacity += 50;
 		printf("\nSuccessfully upgraded your wheelhouse!\n");
 		displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
-		printf("\nType anything to continue.");
-		scanf(" %*s");
+		printf("\nPress ENTER to continue.");
+		scanf("%*c%*[^\n]");
 		break;
 	case 'N':
 		printf("\nTransaction declined! Your wheelhouse's capacity remains the same.\n");
 		displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
-		printf("\nType anything to continue.");
-		scanf(" %*s");
+		printf("\nPress ENTER to continue.");
+		scanf("%*c%*[^\n]");
 	}
 }
 
@@ -476,8 +476,8 @@ int main() {
 
 	// Display instructions and await user input.
 	displayInstructions();
-	printf("\n\nOnce you understand the game, please type anything to go to the first kingdom!\n> ");
-	scanf(" %*s");
+	printf("\n\nOnce you understand the game, press ENTER to go to the first kingdom!");
+	scanf("%*[^\n]");
 
 	clearscr();
 	
@@ -498,8 +498,8 @@ int main() {
 	printf("POST-GAME INVENTORY\n");
 	displayWideDivider();
 	displayInventory(nInventory, 0);
-	printf("\nType anything to end the game.");
-	scanf(" %*s");
+	printf("\nPress ENTER to end the game.");
+	scanf("%*c%*[^\n]");
 
 	return 0;
 }
