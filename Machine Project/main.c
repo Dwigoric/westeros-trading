@@ -194,91 +194,104 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 		}
 
 		if (!isValidBankAction(cAction)) printf("\tInvalid input.");
+
+		if (cAction == 'D' && *pGD == 0.0) {
+			printf("\tYou have no Golden Dragons.");
+			cAction = 0;
+		}
+		else if (cAction == 'W' && *pSavings == 0) {
+			printf("\tYou have no Golden Dragons in your savings account.");
+			cAction = 0;
+		}
+		else if (cAction == 'P' && *pDebt == 0.0) {
+			printf("\tYou have no outstanding debt.");
+			cAction = 0;
+		}
 	} while (!isValidBankAction(cAction));
 
 	switch (cAction) {
 		// For depositing.
 	case 'D':
-		if (*pGD == 0.0) printf("You have no Golden Dragons.\n");
-		else {
-			printf("How much do you want to deposit?\n> ");
+		do {
+			printf("\nHow much do you want to deposit?\n> ");
 			if (!scanf(" %f%*[^\n]", &fAmount)) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
 
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
-			else if (fAmount > *pGD) printf("You do not have that amount of GDs.\n");
-			else {
-				*pSavings += fAmount;
-				*pGD -= fAmount;
-				printf("Transaction successful!\n");
-			}
-		}
+			else if (fAmount > *pGD) printf("\tYou do not have that amount of GDs.\n");
+		} while (fAmount < 0.0 || fAmount > *pGD);
+
+		*pSavings += fAmount;
+		*pGD -= fAmount;
+		printf("Transaction successful!\n");
+
 		printf("\nPress ENTER to continue.");
 		scanf("%*c%*[^\n]");
 		break;
 		// For withdrawing.
 	case 'W':
-		if (*pSavings == 0) printf("You have no Golden Dragons in your savings account.\n");
-		else {
-			printf("How much do you want to withdraw?\n> ");
+		do {
+			printf("\nHow much do you want to withdraw?\n> ");
 			if (!scanf(" %f%*[^\n]", &fAmount)) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
 
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
-			else if (fAmount > *pSavings) printf("You do not have that amount of GDs in your savings account.\n");
-			else {
-				*pGD += fAmount;
-				*pSavings -= fAmount;
-				printf("Transaction successfull!\n");
-			}
-		}
+			else if (fAmount > *pSavings) printf("\tYou do not have that amount of GDs in your savings account.\n");
+		} while (fAmount < 0.0 || fAmount > *pSavings);
+		
+		*pGD += fAmount;
+		*pSavings -= fAmount;
+		printf("Transaction successfull!\n");
+
 		printf("\nPress ENTER to continue.");
 		scanf("%*c%*[^\n]");
 		break;
 		// For borrowing.
 	case 'B':
-		printf("How much do you want to borrow?\n> ");
-		if (!scanf(" %f%*[^\n]", &fAmount)) {
-			fAmount = -1.0;
-			scanf(" %*s");
-		}
-
-		if (fAmount < 0.0) printf("\tInvalid input.\n");
-		else {
-			*pDebt += fAmount;
-			*pGD += fAmount;
-			printf("Transaction successful!\n");
-		}
-		printf("\nPress ENTER to continue.");
-		scanf("%*c%*[^\n]");
-		break;
-	// For paying debt.
-	case 'P':
-		if (*pDebt == 0.0) printf("You have no outstanding debt.\n> ");
-		else {
-			printf("How much debt do you want to pay?\n");
+		do {
+			printf("\nHow much do you want to borrow?\n> ");
 			if (!scanf(" %f%*[^\n]", &fAmount)) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
 
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
-			else if (fAmount > *pGD) printf("You do not have that amount of money right now.\n");
-			else if (fAmount > *pDebt) {
-				printf("You only owe %.2f GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
-				*pGD -= *pDebt;
-				*pDebt = 0.0;
+		} while (fAmount < 0.0);
+		
+		*pDebt += fAmount;
+		*pGD += fAmount;
+		printf("Transaction successful!\n");
+		
+		printf("\nPress ENTER to continue.");
+		scanf("%*c%*[^\n]");
+		break;
+	// For paying debt.
+	case 'P':
+		do {
+			printf("\nHow much debt do you want to pay?\n");
+			if (!scanf(" %f%*[^\n]", &fAmount)) {
+				fAmount = -1.0;
+				scanf(" %*s");
 			}
-			else {
-				*pDebt -= fAmount;
-				*pGD -= fAmount;
-				printf("Transaction successful!\n");
-			}
+			if (fAmount < 0.0) printf("\tInvalid input.\n");
+			else if (fAmount > *pGD) printf("\tYou do not have that amount of money right now.\n");
+		} while (fAmount < 0.0 || fAmount > *pGD);
+
+		if (fAmount > *pDebt) {
+			printf("You only owe %.2f GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
+			*pGD -= *pDebt;
+			*pDebt = 0.0;
 		}
+		else {
+			*pDebt -= fAmount;
+			*pGD -= fAmount;
+			printf("Transaction successful!\n");
+		}
+		
 		printf("\nPress ENTER to continue.");
 		scanf("%*c%*[^\n]");
 	}
