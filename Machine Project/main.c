@@ -9,26 +9,27 @@
 /*
 	The function used when the user wants to buy a trading partner's goods and wares.
 
+	@param nDays - The amount of days left.
 	@param nTradingPartner - The trading partner.
 	@param nCapacity - The capacity of the wheelhouse.
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
+	@param fDebt - How much the user owes to the bank.
+	@param fSavings - Amount of GDs the user has in the bank.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
 */
-void buy(int nTradingPartner, int nCapacity, float* pGD, int (*pInventory)[8]) {
+void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
 	int nCost, nItem, nAmount;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
 	displayWideDivider();
-	displayPartnerSales(nTradingPartner);
-	displayWideDivider();
-	displayInventory(*pInventory, 0);
-	displayWideDivider();
+	displayPartnerSales(nTradingPartner, *pInventory);
+	displayTrading(nDays, *pGD, fDebt, fSavings, nCapacity, *pInventory);
 
 	// Ask user what they want to buy.
 	do {
 		printf("\nWhat would you like to buy?\n");
-		printf("[0] Go Back [1-8] Buy Item: ");
+		printf("[0] Go Back [1-8] Buy Item\n> ");
 		if (!scanf(" %d%*[^\n]", &nItem)) {
 			nItem = 10;
 			scanf(" %*s");
@@ -94,21 +95,19 @@ void buy(int nTradingPartner, int nCapacity, float* pGD, int (*pInventory)[8]) {
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
 */
-void sell(int nTradingPartner, float* pGD, int (*pInventory)[8]) {
+void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
 	int nCost, nAmount, nItem;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
 	displayWideDivider();
-	displayPartnerSales(nTradingPartner);
-	displayWideDivider();
-	displayInventory(*pInventory, 1);
-	displayWideDivider();
+	displayPartnerSales(nTradingPartner, *pInventory);
+	displayTrading(nDays, *pGD, fDebt, fSavings, nCapacity, *pInventory);
 
 	// Ask user what they want to sell.
 	do {
 		printf("What would you like to sell?\n");
-		printf("[0] Go Back [1-8] Sell Item: ");
+		printf("[0] Go Back [1-8] Sell Item\n> ");
 		if (!scanf(" %d%*[^\n]", &nItem)) {
 			nItem = 10;
 			scanf(" %*s");
@@ -181,7 +180,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 
 	// Ask user what they want to do in the bank until they give a valid input.
 	do {
-		printf("\nChoice: ");
+		printf("\n> ");
 		scanf(" %c%*[^\n]", &cAction);
 		
 		// Convert lowercase inputs to uppercase.
@@ -272,7 +271,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	// For paying debt.
 	case 'P':
 		do {
-			printf("\nHow much debt do you want to pay?\n");
+			printf("\nHow much debt do you want to pay?\n> ");
 			if (!scanf(" %f%*[^\n]", &fAmount)) {
 				fAmount = -1.0;
 				scanf(" %*s");
@@ -368,14 +367,15 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 	clearscr();
 
 	displayWideDivider();
-	displayPartnerSales(nTradingPartner);
+	displayPartnerSales(nTradingPartner, *pInventory);
 	displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
 
+	printf("What would you like to do?\n");
 	printf("\n[B]uy\t[S]ell\t[W]heelhouse\t[I]ron Bank\t[Q]uit\n");
 
 	// Ask for user input until user gives a valid input.
 	do {
-		printf("\nChoice: ");
+		printf("\n> ");
 		scanf(" %c%*[^\n]", &cAction);
 
 		switch (cAction) {
@@ -410,10 +410,10 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 
 	switch (cAction) {
 	case 'B':
-		buy(nTradingPartner, *pCapacity, pGD, pInventory);
+		buy(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
 		break;
 	case 'S':
-		sell(nTradingPartner, pGD, pInventory);
+		sell(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
 		break;
 	case 'I':
 		transactWithBank(pGD, pDebt, pSavings);
@@ -446,13 +446,13 @@ char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapaci
 
 	clearscr();
 
+	displayWesterosBanner();
 	displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
-
 	displayOpeningScreen();
 
 	// Ask for user input once, then if the input is invalid, ask the user for their input again until they give a valid input.
 	do {
-		printf("\nChoice: ");
+		printf("\nTyrion and Bronn will go to: ");
 		if (!scanf(" %d%*[^\n]", &nTradingPartner)) {
 			nTradingPartner = 10;
 			scanf(" %*s");
@@ -506,11 +506,15 @@ int main() {
 	} while (nDays >= 1 && cQuitGame == 'W');
 
 	// Once user quits the game or reaches the 15-day limit, display trading stats and inventory.
-	printf("Thank you for playing! Here are your statistics after the game.\n");
-	displayTrading(nDays, fGD, fDebt, fSavings, nCapacity, nInventory);
-	printf("POST-GAME INVENTORY\n");
 	displayWideDivider();
+	printf("\t\t\t _____ _              __          _ \n");
+	printf("\t\t\t/__   \\ |__   ___    /__\\ __   __| |\n");
+	printf("\t\t\t  / /\\/ '_ \\ / _ \\  /_\\| '_ \\ / _` |\n");
+	printf("\t\t\t / /  | | | |  __/ //__| | | | (_| |\n");
+	printf("\t\t\t \\/   |_| |_|\\___| \\__/|_| |_|\\__,_|\n");
+	displayTrading(nDays, fGD, fDebt, fSavings, nCapacity, nInventory);
 	displayInventory(nInventory, 0);
+	displayWideDivider();
 	printf("\nPress ENTER to end the game.");
 	scanf("%*c%*[^\n]");
 
