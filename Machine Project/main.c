@@ -285,6 +285,58 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 }
 
 /*
+	A function to prompt the user to upgrade the wheelhouse.
+
+	@param nDays - The amount of days left.
+	@param pGD - Pointer to the golden dragons variable's memory address.
+	@param pDebt - Pointer to the debt variable's memory address.
+	@param pSavings - Pointer to the savings variable's memory address.
+	@param pCapacity - Pointer to the memory address of the variable holding the wheelhouse capacity.
+	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
+*/
+void promptWheelhouseUpgrade(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int* pInventory) {
+	char cAvailUpgrade;
+
+	printf("A merchant has offered you to upgrade your wheelhouse's capacity by 50! This upgrade costs 200 GD.\n\nCurrent status:\n");
+	displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
+
+	// Prompt user if they want to upgrade wheelhouse. Keep asking until they input Y or N.
+	do {
+		printf("\nWould you like to purchase this upgrade?\n[Y]es / [N]o: ");
+		scanf(" %c%*[^\n]", &cAvailUpgrade);
+
+		// In case user inputs a lowercase letter, use its uppercase equivalent.
+		switch (cAvailUpgrade) {
+		case 'y': cAvailUpgrade = 'Y'; break;
+		case 'n': cAvailUpgrade = 'N'; break;
+		}
+
+		// Check if user wants to upgrade and their balance is enough.
+		if (cAvailUpgrade == 'Y' && *pGD <= 200.0) {
+			printf("\tYou have insufficient balance. The merchant has already left.");
+			cAvailUpgrade = 'N';
+		}
+	} while (cAvailUpgrade != 'Y' && cAvailUpgrade != 'N');
+
+	// Run specific logics based on user's choice.
+	switch (cAvailUpgrade) {
+	case 'Y':
+		*pGD -= 200.0;
+		*pCapacity += 50;
+		printf("\nSuccessfully upgraded your wheelhouse!\n");
+		displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
+		printf("\nType anything to continue.");
+		scanf(" %*s");
+		break;
+	case 'N':
+		printf("\nTransaction declined! Your wheelhouse's capacity remains the same.\n");
+		displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
+		printf("\nType anything to continue.");
+		scanf(" %*s");
+	}
+}
+
+/*
 	The function used to continue the day after doing an action or visiting a new trading partner.
 
 	@param nTradingPartner - The trading partner.
@@ -377,8 +429,7 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 */
 char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8]) {
 	int nTradingPartner;
-	char cAvailUpgrade,
-		 cQuitGame = 'N'; // cQuitGame == 'N' means user has not quit the game (default), otherwise this is 'Y'
+	char cQuitGame = 'N'; // cQuitGame == 'N' means user has not quit the game (default), otherwise this is 'Y'
 
 	clearscr();
 
@@ -403,45 +454,7 @@ char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapaci
 	clearscr();
 
 	// If user has not yet quit the game and lucky to meet the merchant for wheelhouse upgrade.
-	if (cQuitGame == 'N' && allowWheelhouseUpgrade()) {
-		printf("A merchant has offered you to upgrade your wheelhouse's capacity by 50! This upgrade costs 200 GD.\n\nCurrent status:\n");
-		displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
-
-		// Prompt user if they want to upgrade wheelhouse. Keep asking until they input Y or N.
-		do {
-			printf("\nWould you like to purchase this upgrade?\n[Y]es / [N]o: ");
-			scanf(" %c%*[^\n]", &cAvailUpgrade);
-
-			// In case user inputs a lowercase letter, use its uppercase equivalent.
-			switch (cAvailUpgrade) {
-			case 'y': cAvailUpgrade = 'Y'; break;
-			case 'n': cAvailUpgrade = 'N'; break;
-			}
-
-			// Check if user wants to upgrade and their balance is enough.
-			if (cAvailUpgrade == 'Y' && *pGD <= 200.0) {
-				printf("\tYou have insufficient balance. The merchant has already left.");
-				cAvailUpgrade = 'N';
-			}
-		} while (cAvailUpgrade != 'Y' && cAvailUpgrade != 'N');
-
-		// Run specific logics based on user's choice.
-		switch (cAvailUpgrade) {
-		case 'Y':
-			*pGD -= 200.0;
-			*pCapacity += 50;
-			printf("\nSuccessfully upgraded your wheelhouse!\n");
-			displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
-			printf("\nType anything to continue.");
-			scanf(" %*s");
-			break;
-		case 'N':
-			printf("\nTransaction declined! Your wheelhouse's capacity remains the same.\n");
-			displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
-			printf("\nType anything to continue.");
-			scanf(" %*s");
-		}
-	}
+	if (cQuitGame == 'N' && allowWheelhouseUpgrade()) promptWheelhouseUpgrade(nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
 
 	// If user has not yet quit the game or ridden the Wheelhouse, continue the day.
 	while (cQuitGame == 'N') cQuitGame = continueDay(nTradingPartner, nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
