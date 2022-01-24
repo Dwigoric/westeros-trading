@@ -93,14 +93,14 @@ void displayWaresAndGoods(int nSweetBeet, int nTimber, int nIntricateLace, int n
 	displayWideDivider();
 	printf("ITEM\t\tWARES AND GOODS\t\t\tSELLING/BUYING PRICE\n");
 	displayWideDivider();
-	printf("[1]\t\tSweet Beet\t\t\t%u\n", nSweetBeet);
-	printf("[2]\t\tTimber\t\t\t\t%u\n", nTimber);
-	printf("[3]\t\tIntricate Lace\t\t\t%u\n", nIntricateLace);
-	printf("[4]\t\tIntoxicating Perfume\t\t%u\n", nIntoxicatingPerfume);
-	printf("[5]\t\tPale Amber Wine\t\t\t%u\n", nPaleAmberWine);
-	printf("[6]\t\tMyrish Eye\t\t\t%u\n", nMyrishEye);
-	printf("[7]\t\tQohorik Tapestry\t\t%u\n", nQohorikTapestry);
-	printf("[8]\t\tValyrian Steel\t\t\t%u\n", nValyrianSteel);
+	printf("[1]\t\tSweet Beet\t\t\t%d\n", nSweetBeet);
+	printf("[2]\t\tTimber\t\t\t\t%d\n", nTimber);
+	printf("[3]\t\tIntricate Lace\t\t\t%d\n", nIntricateLace);
+	printf("[4]\t\tIntoxicating Perfume\t\t%d\n", nIntoxicatingPerfume);
+	printf("[5]\t\tPale Amber Wine\t\t\t%d\n", nPaleAmberWine);
+	printf("[6]\t\tMyrish Eye\t\t\t%d\n", nMyrishEye);
+	printf("[7]\t\tQohorik Tapestry\t\t%d\n", nQohorikTapestry);
+	printf("[8]\t\tValyrian Steel\t\t\t%d\n", nValyrianSteel);
 }
 
 /*
@@ -166,11 +166,11 @@ void displayPartnerSales(int nTradingPartner) {
 */
 void displayTrading(int nDays, float fGD, float fDebt, float fSavings, int nCapacity, int nInventory[8]) {
 	displayWideDivider();
-	printf("Days Remaining:\t\t%u Days\n", nDays);
+	printf("Days Remaining:\t\t%d Days\n", nDays);
 	printf("GD:\t\t\t%.2f\n", fGD);
 	printf("Debt:\t\t\t%.2f\n", fDebt);
 	printf("Savings:\t\t%.2f\n", fSavings);
-	printf("Capacity:\t\t%u / %u\n", arraySummation(nInventory), nCapacity);
+	printf("Capacity:\t\t%d / %d\n", arraySummation(nInventory), nCapacity);
 	displayWideDivider();
 }
 
@@ -183,14 +183,14 @@ void displayTrading(int nDays, float fGD, float fDebt, float fSavings, int nCapa
 void displayInventory(int nInventory[8], int nFilter) {
 	printf("\t\t\tWHEELHOUSE INVENTORY\n");
 	displayWideDivider();
-	if (!nFilter || nInventory[0] > 0) printf("[1] Sweet Beet\t\t\t%u\n", nInventory[0]);
-	if (!nFilter || nInventory[1] > 0) printf("[2] Timber\t\t\t%u\n", nInventory[1]);
-	if (!nFilter || nInventory[2] > 0) printf("[3] Intricate Lace\t\t%u\n", nInventory[2]);
-	if (!nFilter || nInventory[3] > 0) printf("[4] Intoxicating Perfume\t%u\n", nInventory[3]);
-	if (!nFilter || nInventory[4] > 0) printf("[5] Pale Amber Wine\t\t%u\n", nInventory[4]);
-	if (!nFilter || nInventory[5] > 0) printf("[6] Myrish Eye\t\t\t%u\n", nInventory[5]);
-	if (!nFilter || nInventory[6] > 0) printf("[7] Qohorik Tapestry\t\t%u\n", nInventory[6]);
-	if (!nFilter || nInventory[7] > 0) printf("[8] Valyrian Steel\t\t%u\n", nInventory[7]);
+	if (!nFilter || nInventory[0] > 0) printf("[1] Sweet Beet\t\t\t%d\n", nInventory[0]);
+	if (!nFilter || nInventory[1] > 0) printf("[2] Timber\t\t\t%d\n", nInventory[1]);
+	if (!nFilter || nInventory[2] > 0) printf("[3] Intricate Lace\t\t%d\n", nInventory[2]);
+	if (!nFilter || nInventory[3] > 0) printf("[4] Intoxicating Perfume\t%d\n", nInventory[3]);
+	if (!nFilter || nInventory[4] > 0) printf("[5] Pale Amber Wine\t\t%d\n", nInventory[4]);
+	if (!nFilter || nInventory[5] > 0) printf("[6] Myrish Eye\t\t\t%d\n", nInventory[5]);
+	if (!nFilter || nInventory[6] > 0) printf("[7] Qohorik Tapestry\t\t%d\n", nInventory[6]);
+	if (!nFilter || nInventory[7] > 0) printf("[8] Valyrian Steel\t\t%d\n", nInventory[7]);
 }
 
 /*
