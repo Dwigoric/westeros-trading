@@ -203,12 +203,12 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 			printf("\tYou have no Golden Dragons.");
 			cAction = 0;
 		}
-		else if (cAction == 'W' && *pSavings == 0) {
+		else if (cAction == 'W' && *pSavings == 0.0) {
 			printf("\tYou have no Golden Dragons in your savings account.");
 			cAction = 0;
 		}
-		else if (cAction == 'P' && *pDebt == 0.0) {
-			printf("\tYou have no outstanding debt.");
+		else if (cAction == 'P' && (*pDebt == 0.0 || *pGD == 0.0)) {
+			printf("\tYou have no outstanding debt or you have no GDs in your hand.");
 			cAction = 0;
 		}
 	} while (!isValidBankAction(cAction));
