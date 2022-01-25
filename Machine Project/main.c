@@ -5,6 +5,7 @@
 */
 
 #include "display.h"
+#include <math.h>
 
 /*
 	The function used when the user wants to buy a trading partner's goods and wares.
@@ -45,6 +46,8 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 			nAmount = 0;
 			scanf(" %*s");
 		}
+
+		if (!isnormal(nAmount)) nAmount = 0;
 
 		if (nAmount < 1) printf("\tInvalid input.\n");
 		else if (nAmount > nCapacity - (*pInventory)[nItem - 1]) printf("\tBuying %d of this item will exceed your wheelhouse's capacity.\n", nAmount);
@@ -123,6 +126,8 @@ void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt
 			nAmount = 0;
 			scanf(" %*s");
 		}
+
+		if (!isnormal(nAmount)) nAmount = 0;
 
 		if (nAmount < 1) printf("\tInvalid input.\n");
 		else if (nAmount > (*pInventory)[nItem - 1]) printf("\tYou only have %d of that item.\n", (*pInventory)[nItem - 1]);
@@ -218,6 +223,8 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 				scanf(" %*s");
 			}
 
+			if (!isnormal(fAmount)) fAmount = -1.0;
+
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 			else if (fAmount > *pGD) printf("\tYou do not have that amount of GDs.\n");
 		} while (fAmount < 0.0 || fAmount > *pGD);
@@ -237,6 +244,8 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
+
+			if (!isnormal(fAmount)) fAmount = -1.0;
 
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 			else if (fAmount > *pSavings) printf("\tYou do not have that amount of GDs in your savings account.\n");
@@ -258,6 +267,8 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 				scanf(" %*s");
 			}
 
+			if (!isnormal(fAmount)) fAmount = -1.0;
+
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 		} while (fAmount < 0.0);
 		
@@ -276,6 +287,9 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
+
+			if (!isnormal(fAmount)) fAmount = -1.0;
+
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 			else if (fAmount > *pGD) printf("\tYou do not have that amount of money right now.\n");
 		} while (fAmount < 0.0 || fAmount > *pGD);
