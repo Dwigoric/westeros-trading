@@ -1,7 +1,7 @@
 /*
 	Description: Machine Project for CCPROG1
 	Programmed by: Joshua C. Permito  S17A
-	Last modified: January 25, 2022 @ 1:36 PM
+	Last modified: January 25, 2022 @ 2:41 PM
 */
 
 #include "display.h"
@@ -17,9 +17,11 @@
 	@param fDebt - How much the user owes to the bank.
 	@param fSavings - Amount of GDs the user has in the bank.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
+
+	@return 1 if user wants to go back, 0 if not.
 */
-void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
-	int nCost, nItem, nAmount;
+int buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
+	int nCost, nItem, nAmount, goBack = 0;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
@@ -61,7 +63,7 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 			// Run this only when user has enough GDs.
 			printf("\nAre you sure you want go through with the purchase? [Y]es/[N]o: ");
 			scanf(" %c%*[^\n]", &cChoice);
-	
+
 			// Capitalize user input if lowercase.
 			switch (cChoice) {
 			case 'y': cChoice = 'Y'; break;
@@ -70,7 +72,7 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 
 			if (cChoice != 'Y' && cChoice != 'N') printf("\tInvalid input.\n");
 		} while (cChoice != 'Y' && cChoice != 'N');
-	
+
 		if (cChoice == 'N') {
 			// Go back to "day" menu if user does not want to buy.
 			printf("\nAborting transaction. Press ENTER to continue.");
@@ -89,6 +91,9 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 			scanf("%*c%*[^\n]");
 		}
 	}
+	else goBack = 1;
+
+	return goBack;
 }
 
 /*
@@ -97,9 +102,11 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 	@param nTradingPartner - The trading partner.
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
+
+	@return 1 if user wants to go back, 0 if not.
 */
-void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
-	int nCost, nAmount, nItem;
+int sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
+	int nCost, nAmount, nItem, goBack = 0;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
@@ -168,6 +175,9 @@ void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt
 			scanf("%*c%*[^\n]");
 		}
 	}
+	else goBack = 1;
+
+	return goBack;
 }
 
 /*
@@ -176,8 +186,11 @@ void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt
 	@param nGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
 	@param nSavings - Pointer to the memory address of the variable holding the user's savings.
 	@param nDebt - Pointer to the memory address of the variable holding the user's debt to the bank.
+
+	@return 1 if user wants to go back, 0 if not.
 */
-void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
+int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
+	int goBack = 0;
 	char cAction;
 	float fAmount;
 
@@ -307,7 +320,12 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 		
 		printf("\nPress ENTER to continue.");
 		scanf("%*c%*[^\n]");
+		break;
+	case 'X':
+		goBack = 1;
 	}
+
+	return goBack;
 }
 
 /*
@@ -376,6 +394,7 @@ void promptWheelhouseUpgrade(int nDays, float* pGD, float* pDebt, float* pSaving
 	@return 'Y' if the user wants to quit the game, 'N' if the day continues, 'W' if the user wants to ride the wheelhouse.
 */
 char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8]) {
+	int goBack;
 	char cAction, cQuitGame = 'N';
 
 	clearscr();
@@ -420,17 +439,24 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 		}
 	} while (!isValidAction(cAction));
 
-	clearscr();
-
 	switch (cAction) {
 	case 'B':
-		buy(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
+		do {
+			clearscr();
+			goBack = buy(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
+		} while (goBack == 0 && arraySummation(*pInventory) < *pCapacity);
 		break;
 	case 'S':
-		sell(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
+		do {
+			clearscr();
+			goBack = sell(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
+		} while (goBack == 0 && arraySummation(*pInventory) > 0);
 		break;
 	case 'I':
-		transactWithBank(pGD, pDebt, pSavings);
+		do {
+			clearscr();
+			goBack = transactWithBank(pGD, pDebt, pSavings);
+		} while (goBack == 0);
 		break;
 	case 'W':
 		cQuitGame = 'W';
@@ -517,6 +543,7 @@ char startGame() {
 	} while (nDays >= 1 && cQuitGame == 'W');
 
 	// Once user quits the game or reaches the 15-day limit, display trading stats and inventory.
+	clearscr();
 	displayWideDivider();
 	printf("\t\t\t _____ _              __          _ \n");
 	printf("\t\t\t/__   \\ |__   ___    /__\\ __   __| |\n");
@@ -526,7 +553,7 @@ char startGame() {
 	displayTrading(nDays, fGD, fDebt, fSavings, nCapacity, nInventory);
 	displayInventory(nInventory, 0);
 	displayWideDivider();
-	printf("\nWell done! Type [Y] if you wish to start another game.");
+	printf("\nWell done! Type [Y] if you wish to start another game.\n> ");
 	scanf(" %c%*[^\n]", &cAnotherGame);
 
 	return cAnotherGame;
