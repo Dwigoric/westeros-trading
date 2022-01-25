@@ -1,7 +1,7 @@
 /*
 	Description: Machine Project for CCPROG1
 	Programmed by: Joshua C. Permito  S17A
-	Last modified: January 24, 2022 @ 4:30 PM
+	Last modified: January 25, 2022 @ 10:21 AM
 */
 
 #include "display.h"
@@ -429,7 +429,7 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 }
 
 /*
-	The function used to run the game's logic. This function recurses itself as long as the game is in progress.
+	The function used to start a day in the game. This function runs the continueDay() function as long as the game is in progress.
 
 	@param nDays - The amount of days left.
 	@param pGD - Pointer to the golden dragons variable's memory address.
@@ -476,10 +476,12 @@ char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapaci
 }
 
 /*
-	The main function.
+	A function used to run the game's logic.
+
+	@return 'Y' or 'y' if the user wants to play another game.
 */
-int main() {
-	char cQuitGame;
+char startGame() {
+	char cAnotherGame, cQuitGame;
 	float fGD = 2000.0,
 		fDebt = 0.0,
 		fSavings = 0.0;
@@ -487,13 +489,8 @@ int main() {
 		nCapacity = 50,
 		nInventory[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	// Display instructions and await user input.
-	displayInstructions();
-	printf("\n\nOnce you understand the game, press ENTER to go to the first kingdom!");
-	scanf("%*[^\n]");
-
 	clearscr();
-	
+
 	// Run the game logic. Call startDay() in a loop; 1 loop = 1 day.
 	do {
 		cQuitGame = startDay(nDays, &fGD, &fDebt, &fSavings, &nCapacity, &nInventory);
@@ -515,8 +512,25 @@ int main() {
 	displayTrading(nDays, fGD, fDebt, fSavings, nCapacity, nInventory);
 	displayInventory(nInventory, 0);
 	displayWideDivider();
-	printf("\nPress ENTER to end the game.");
-	scanf("%*c%*[^\n]");
+	printf("\nWell done! Type [Y] if you wish to start another game.");
+	scanf(" %c%*[^\n]", &cAnotherGame);
+
+	return cAnotherGame;
+}
+
+/*
+	The main function.
+*/
+int main() {
+	char cAnotherGame;
+
+	// Display instructions and await user input.
+	displayInstructions();
+	printf("\n\nOnce you understand the game, press ENTER to go to the first kingdom!");
+	scanf("%*[^\n]");
+	
+	// Start a game. 1 loop = 1 game.
+	do cAnotherGame = startGame(); while (cAnotherGame == 'Y' || cAnotherGame == 'y');
 
 	return 0;
 }
