@@ -31,7 +31,7 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 	do {
 		printf("\nWhat would you like to buy?\n");
 		printf("[0] Go Back [1-8] Buy Item\n> ");
-		if (!scanf(" %d%*[^\n]", &nItem)) {
+		if (scanf(" %d%*[^\n]", &nItem) == 0) {
 			nItem = 10;
 			scanf(" %*s");
 		}
@@ -42,7 +42,7 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to buy?\n> ");
-		if (!scanf(" %d%*[^\n]", &nAmount)) {
+		if (scanf(" %d%*[^\n]", &nAmount) == 0) {
 			nAmount = 0;
 			scanf(" %*s");
 		}
@@ -111,7 +111,7 @@ void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt
 	do {
 		printf("What would you like to sell?\n");
 		printf("[0] Go Back [1-8] Sell Item\n> ");
-		if (!scanf(" %d%*[^\n]", &nItem)) {
+		if (scanf(" %d%*[^\n]", &nItem) == 0) {
 			nItem = 10;
 			scanf(" %*s");
 		}
@@ -122,7 +122,7 @@ void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
 		printf("\nHow many would you like to sell?\n> ");
-		if (!scanf(" %d%*[^\n]", &nAmount)) {
+		if (scanf(" %d%*[^\n]", &nAmount) == 0) {
 			nAmount = 0;
 			scanf(" %*s");
 		}
@@ -218,7 +218,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	case 'D':
 		do {
 			printf("\nHow much do you want to deposit?\n> ");
-			if (!scanf(" %f%*[^\n]", &fAmount)) {
+			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
@@ -240,7 +240,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	case 'W':
 		do {
 			printf("\nHow much do you want to withdraw?\n> ");
-			if (!scanf(" %f%*[^\n]", &fAmount)) {
+			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
@@ -262,7 +262,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	case 'B':
 		do {
 			printf("\nHow much do you want to borrow?\n> ");
-			if (!scanf(" %f%*[^\n]", &fAmount)) {
+			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
@@ -283,7 +283,7 @@ void transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	case 'P':
 		do {
 			printf("\nHow much debt do you want to pay?\n> ");
-			if (!scanf(" %f%*[^\n]", &fAmount)) {
+			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
 				fAmount = -1.0;
 				scanf(" %*s");
 			}
@@ -467,7 +467,7 @@ char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapaci
 	// Ask for user input once, then if the input is invalid, ask the user for their input again until they give a valid input.
 	do {
 		printf("\nTyrion and Bronn will go to: ");
-		if (!scanf(" %d%*[^\n]", &nTradingPartner)) {
+		if (scanf(" %d%*[^\n]", &nTradingPartner) == 0) {
 			nTradingPartner = 10;
 			scanf(" %*s");
 		}
