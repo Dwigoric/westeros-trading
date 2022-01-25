@@ -110,14 +110,18 @@ void displayWaresAndGoods(int nSweetBeet, int nTimber, int nIntricateLace, int n
 	displayWideDivider();
 	printf("ITEM\t\tWARES AND GOODS\t\t\tSELLING/BUYING PRICE\t\tOWNED\n");
 	displayWideDivider();
-	printf("[1]\t\tSweet Beet\t\t\t%d\t\t\t\t%d\n", nSweetBeet, nInventory[0]);
-	printf("[2]\t\tTimber\t\t\t\t%d\t\t\t\t%d\n", nTimber, nInventory[1]);
-	printf("[3]\t\tIntricate Lace\t\t\t%d\t\t\t\t%d\n", nIntricateLace, nInventory[2]);
-	printf("[4]\t\tIntoxicating Perfume\t\t%d\t\t\t\t%d\n", nIntoxicatingPerfume, nInventory[3]);
-	printf("[5]\t\tPale Amber Wine\t\t\t%d\t\t\t\t%d\n", nPaleAmberWine, nInventory[4]);
-	printf("[6]\t\tMyrish Eye\t\t\t%d\t\t\t\t%d\n", nMyrishEye, nInventory[5]);
-	printf("[7]\t\tQohorik Tapestry\t\t%d\t\t\t\t%d\n", nQohorikTapestry, nInventory[6]);
-	printf("[8]\t\tValyrian Steel\t\t\t%d\t\t\t\t%d\n", nValyrianSteel, nInventory[7]);
+
+	char onSale[2][9] = { "\t", "[!] SALE" };
+
+	// Display prices of each item and how much the user owns per item. Displays whether the item price is special.
+	printf("[1]\t\tSweet Beet\t\t\t%d %s\t\t\t%d\n", nSweetBeet, onSale[isSpecialPrice(0, nSweetBeet)], nInventory[0]);
+	printf("[2]\t\tTimber\t\t\t\t%d %s\t\t\t%d\n", nTimber, onSale[isSpecialPrice(1, nTimber)], nInventory[1]);
+	printf("[3]\t\tIntricate Lace\t\t\t%d %s\t\t\t%d\n", nIntricateLace, onSale[isSpecialPrice(2, nIntricateLace)], nInventory[2]);
+	printf("[4]\t\tIntoxicating Perfume\t\t%d %s\t\t\t%d\n", nIntoxicatingPerfume, onSale[isSpecialPrice(3, nIntoxicatingPerfume)], nInventory[3]);
+	printf("[5]\t\tPale Amber Wine\t\t\t%d %s\t\t\t%d\n", nPaleAmberWine, onSale[isSpecialPrice(4, nPaleAmberWine)], nInventory[4]);
+	printf("[6]\t\tMyrish Eye\t\t\t%d %s\t\t\t%d\n", nMyrishEye, onSale[isSpecialPrice(5, nMyrishEye)], nInventory[5]);
+	printf("[7]\t\tQohorik Tapestry\t\t%d %s\t\t\t%d\n", nQohorikTapestry, onSale[isSpecialPrice(6, nQohorikTapestry)], nInventory[6]);
+	printf("[8]\t\tValyrian Steel\t\t\t%d %s\t\t\t%d\n", nValyrianSteel, onSale[isSpecialPrice(7, nValyrianSteel)], nInventory[7]);
 }
 
 /*
@@ -141,12 +145,12 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		);
 		break;
 	case 2:
-		printf("   __           \n");
-		printf("  / / _   _ ___ \n");
-		printf(" / / | | | / __|\n");
-		printf("/ /__| |_| \\__ \\\n");
-		printf("\\____/\\__, |___/\n");
-		printf("      |___/     \n");
+		printf("\t\t\t\t   __           \n");
+		printf("\t\t\t\t  / / _   _ ___ \n");
+		printf("\t\t\t\t / / | | | / __|\n");
+		printf("\t\t\t\t/ /__| |_| \\__ \\\n");
+		printf("\t\t\t\t\\____/\\__, |___/\n");
+		printf("\t\t\t\t      |___/     \n");
 		displayWaresAndGoods(
 			LYS_SWEET_BEET, LYS_TIMBER, LYS_INTRICATE_LACE, LYS_INTOXICATING_PERFUME,
 			LYS_PALE_AMBER_WINE, LYS_MYRISH_EYE, LYS_QOHORIK_TAPESTRY, LYS_VALYRIAN_STEEL,
@@ -154,11 +158,11 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		);
 		break;
 	case 3:
-		printf("  /\\/\\  _   _ _ __ \n");
-		printf(" /    \\| | | | '__|\n");
-		printf("/ /\\/\\ \\ |_| | |   \n");
-		printf("\\/    \\/\\__, |_|   \n");
-		printf("        |___/      \n");
+		printf("\t\t\t\t  /\\/\\  _   _ _ __ \n");
+		printf("\t\t\t\t /    \\| | | | '__|\n");
+		printf("\t\t\t\t/ /\\/\\ \\ |_| | |   \n");
+		printf("\t\t\t\t\\/    \\/\\__, |_|   \n");
+		printf("\t\t\t\t        |___/      \n");
 		displayWaresAndGoods(
 			MYR_SWEET_BEET, MYR_TIMBER, MYR_INTRICATE_LACE, MYR_INTOXICATING_PERFUME,
 			MYR_PALE_AMBER_WINE, MYR_MYRISH_EYE, MYR_QOHORIK_TAPESTRY, MYR_VALYRIAN_STEEL,
@@ -166,11 +170,11 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		);
 		break;
 	case 4:
-		printf("   ___           _            \n");
-		printf("  / _ \\___ _ __ | |_ ___  ___ \n");
-		printf(" / /_)/ _ \\ '_ \\| __/ _ \\/ __|\n");
-		printf("/ ___/  __/ | | | || (_) \\__ \\\n");
-		printf("\\/    \\___|_| |_|\\__\\___/|___/\n");
+		printf("\t\t\t     ___           _            \n");
+		printf("\t\t\t    / _ \\___ _ __ | |_ ___  ___ \n");
+		printf("\t\t\t   / /_)/ _ \\ '_ \\| __/ _ \\/ __|\n");
+		printf("\t\t\t  / ___/  __/ | | | || (_) \\__ \\\n");
+		printf("\t\t\t  \\/    \\___|_| |_|\\__\\___/|___/\n");
 		displayWaresAndGoods(
 			PENTOS_SWEET_BEET, PENTOS_TIMBER, PENTOS_INTRICATE_LACE, PENTOS_INTOXICATING_PERFUME,
 			PENTOS_PALE_AMBER_WINE, PENTOS_MYRISH_EYE, PENTOS_QOHORIK_TAPESTRY, PENTOS_VALYRIAN_STEEL,
@@ -178,11 +182,11 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		);
 		break;
 	case 5:
-		printf("   ____      _                \n");
-		printf("  /___ \\___ | |__   ___  _ __ \n");
-		printf(" //  / / _ \\| '_ \\ / _ \\| '__|\n");
-		printf("/ \\_/ / (_) | | | | (_) | |   \n");
-		printf("\\___,_\\\\___/|_| |_|\\___/|_|   \n");
+		printf("\t\t\t     ____      _                \n");
+		printf("\t\t\t    /___ \\___ | |__   ___  _ __ \n");
+		printf("\t\t\t   //  / / _ \\| '_ \\ / _ \\| '__|\n");
+		printf("\t\t\t  / \\_/ / (_) | | | | (_) | |   \n");
+		printf("\t\t\t  \\___,_\\\\___/|_| |_|\\___/|_|   \n");
 		displayWaresAndGoods(
 			QOHOR_SWEET_BEET, QOHOR_TIMBER, QOHOR_INTRICATE_LACE, QOHOR_INTOXICATING_PERFUME,
 			QOHOR_PALE_AMBER_WINE, QOHOR_MYRISH_EYE, QOHOR_QOHORIK_TAPESTRY, QOHOR_VALYRIAN_STEEL,
@@ -190,11 +194,11 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		);
 		break;
 	case 6:
-		printf("             _             _   _     \n");
-		printf(" /\\   /\\___ | | __ _ _ __ | |_(_)___ \n");
-		printf(" \\ \\ / / _ \\| |/ _` | '_ \\| __| / __|\n");
-		printf("  \\ V / (_) | | (_| | | | | |_| \\__ \\\n");
-		printf("   \\_/ \\___/|_|\\__,_|_| |_|\\__|_|___/\n");
+		printf("\t\t\t             _             _   _     \n");
+		printf("\t\t\t /\\   /\\___ | | __ _ _ __ | |_(_)___ \n");
+		printf("\t\t\t \\ \\ / / _ \\| |/ _` | '_ \\| __| / __|\n");
+		printf("\t\t\t  \\ V / (_) | | (_| | | | | |_| \\__ \\\n");
+		printf("\t\t\t   \\_/ \\___/|_|\\__,_|_| |_|\\__|_|___/\n");
 		displayWaresAndGoods(
 			VOLANTIS_SWEET_BEET, VOLANTIS_TIMBER, VOLANTIS_INTRICATE_LACE, VOLANTIS_INTOXICATING_PERFUME,
 			VOLANTIS_PALE_AMBER_WINE, VOLANTIS_MYRISH_EYE, VOLANTIS_QOHORIK_TAPESTRY, VOLANTIS_VALYRIAN_STEEL,
