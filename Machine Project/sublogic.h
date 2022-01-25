@@ -27,6 +27,47 @@ int arraySummation(int nArray[8]) {
 	return sum;
 }
 
+/*
+	Determines whether the item is on sale.
+
+	@param nIndex - The inventory array-based index of the item.
+	@param nPrice - The price of the item.
+
+	@return 1 if the item is in sale, otherwise 0 if not.
+*/
+int isSpecialPrice(int nIndex, int nPrice) {
+	int nSale = 0;
+
+	switch (nIndex) {
+	case 0:
+		if (nPrice >= 100 && nPrice <= 150) nSale = 1;
+		break;
+	case 1:
+		if (nPrice >= 200 && nPrice <= 250) nSale = 1;
+		break;
+	case 2:
+		if (nPrice >= 300 && nPrice <= 350) nSale = 1;
+		break;
+	case 3:
+		if (nPrice >= 400 && nPrice <= 450) nSale = 1;
+		break;
+	case 4:
+		if (nPrice >= 500 && nPrice <= 550) nSale = 1;
+		break;
+	case 5:
+		if (nPrice >= 600 && nPrice <= 650) nSale = 1;
+		break;
+	case 6:
+		if (nPrice >= 700 && nPrice <= 750) nSale = 1;
+		break;
+	case 7:
+		if (nPrice >= 800 && nPrice <= 850) nSale = 1;
+		break;
+	}
+
+	return nSale;
+}
+
 
 /*
 	A function that determines validity of the trading partner.
