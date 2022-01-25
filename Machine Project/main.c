@@ -35,8 +35,8 @@ void buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 			scanf(" %*s");
 		}
 
-		if (nItem > 8) printf("\tInvalid input.");
-	} while (nItem > 8);
+		if (nItem < 0 || nItem > 8) printf("\tInvalid input.");
+	} while (nItem < 0 || nItem > 8);
 
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
@@ -113,8 +113,8 @@ void sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt
 			scanf(" %*s");
 		}
 
-		if (nItem > 8) printf("\tInvalid input.");
-	} while (nItem > 8);
+		if (nItem < 0 || nItem > 8) printf("\tInvalid input.");
+	} while (nItem < 0 || nItem > 8);
 
 	// Ask user how many they want to buy.
 	if (nItem >= 1 && nItem <= 8) do {
