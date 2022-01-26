@@ -38,6 +38,7 @@ int arraySummation(int nArray[8]) {
 int isSpecialPrice(int nIndex, int nPrice) {
 	int nSale = 0;
 
+	// Depending on the nIndex which corresponds to the item, determine if the price is in the special price range.
 	switch (nIndex) {
 	case 0:
 		if (nPrice >= 100 && nPrice <= 150) nSale = 1;

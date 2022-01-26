@@ -1,7 +1,7 @@
 /*
 	Description: Machine Project for CCPROG1
 	Programmed by: Joshua C. Permito  S17A
-	Last modified: January 25, 2022 @ 2:41 PM
+	Last modified: January 26, 2022 @ 8:05 AM
 */
 
 #include "display.h"
@@ -51,6 +51,7 @@ int buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, 
 
 		if (!isnormal(nAmount)) nAmount = 0;
 
+		// Validate user input.
 		if (nAmount < 1) printf("\tInvalid input.\n");
 		else if (nAmount > nCapacity - (*pInventory)[nItem - 1]) printf("\tBuying %d of this item will exceed your wheelhouse's capacity.\n", nAmount);
 	} while (nAmount < 1 || nAmount > nCapacity - (*pInventory)[nItem - 1]);
@@ -136,6 +137,7 @@ int sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 
 		if (!isnormal(nAmount)) nAmount = 0;
 
+		// Validate user input.
 		if (nAmount < 1) printf("\tInvalid input.\n");
 		else if (nAmount > (*pInventory)[nItem - 1]) printf("\tYou only have %d of that item.\n", (*pInventory)[nItem - 1]);
 	} while (nAmount < 0 || nAmount > (*pInventory)[nItem - 1]);
@@ -212,6 +214,7 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 
 		if (!isValidBankAction(cAction)) printf("\tInvalid input.");
 
+		// Prevent doing action if the user does not have the required resources.
 		if (cAction == 'D' && *pGD == 0.0) {
 			printf("\tYou have no Golden Dragons.");
 			cAction = 0;
@@ -227,8 +230,9 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	} while (!isValidBankAction(cAction));
 
 	switch (cAction) {
-		// For depositing.
+		// For depositing GDs to the Iron Bank.
 	case 'D':
+		// Ask user how much they want to deposit.
 		do {
 			printf("\nHow much do you want to deposit?\n> ");
 			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
@@ -238,10 +242,12 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 
 			if (!isnormal(fAmount)) fAmount = -1.0;
 
+			// Validate user input.
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 			else if (fAmount > *pGD) printf("\tYou do not have that amount of GDs.\n");
 		} while (fAmount < 0.0 || fAmount > *pGD);
 
+		// Transfer in-hand GDs to savings account.
 		*pSavings += fAmount;
 		*pGD -= fAmount;
 		printf("Transaction successful!\n");
@@ -249,8 +255,9 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 		printf("\nPress ENTER to continue.");
 		scanf("%*c%*[^\n]");
 		break;
-		// For withdrawing.
+		// For withdrawing GDs from the Iron Bank.
 	case 'W':
+		// Ask user how much they want to withdraw.
 		do {
 			printf("\nHow much do you want to withdraw?\n> ");
 			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
@@ -260,10 +267,12 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 
 			if (!isnormal(fAmount)) fAmount = -1.0;
 
+			// Validate user input.
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 			else if (fAmount > *pSavings) printf("\tYou do not have that amount of GDs in your savings account.\n");
 		} while (fAmount < 0.0 || fAmount > *pSavings);
 		
+		// Subtract amount from savings and add to in-hand GDs.
 		*pGD += fAmount;
 		*pSavings -= fAmount;
 		printf("Transaction successfull!\n");
@@ -271,8 +280,9 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 		printf("\nPress ENTER to continue.");
 		scanf("%*c%*[^\n]");
 		break;
-		// For borrowing.
+		// For borrowing GDs from the Iron Bank.
 	case 'B':
+		// Ask user how much they want to borrow.
 		do {
 			printf("\nHow much do you want to borrow?\n> ");
 			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
@@ -282,9 +292,11 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 
 			if (!isnormal(fAmount)) fAmount = -1.0;
 
+			// Validate user input.
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 		} while (fAmount < 0.0);
 		
+		// Add the entered amount to their debt and give GDs.
 		*pDebt += fAmount;
 		*pGD += fAmount;
 		printf("Transaction successful!\n");
@@ -292,8 +304,9 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 		printf("\nPress ENTER to continue.");
 		scanf("%*c%*[^\n]");
 		break;
-	// For paying debt.
+	// For paying debt to the Iron Bank.
 	case 'P':
+		// Ask user how much of the debt they want to pay.
 		do {
 			printf("\nHow much debt do you want to pay?\n> ");
 			if (scanf(" %f%*[^\n]", &fAmount) == 0) {
@@ -303,15 +316,18 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 
 			if (!isnormal(fAmount)) fAmount = -1.0;
 
+			// Validate user input.
 			if (fAmount < 0.0) printf("\tInvalid input.\n");
 			else if (fAmount > *pGD) printf("\tYou do not have that amount of money right now.\n");
 		} while (fAmount < 0.0 || fAmount > *pGD);
 
+		// Pay all debt if user entered a larger number than their outstanding debt.
 		if (fAmount > *pDebt) {
 			printf("You only owe %.2f GDs to the bank. Your debt has been automatically paid in full.\n", *pDebt);
 			*pGD -= *pDebt;
 			*pDebt = 0.0;
 		}
+		// Pay specified amount of debt.
 		else {
 			*pDebt -= fAmount;
 			*pGD -= fAmount;
@@ -439,28 +455,34 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 		}
 	} while (!isValidAction(cAction));
 
+	// Run specific logics based on the action that want to be done by the user.
 	switch (cAction) {
+		// Buying items.
 	case 'B':
 		do {
 			clearscr();
 			goBack = buy(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
 		} while (goBack == 0 && arraySummation(*pInventory) < *pCapacity);
 		break;
+		// Selling items.
 	case 'S':
 		do {
 			clearscr();
 			goBack = sell(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
 		} while (goBack == 0 && arraySummation(*pInventory) > 0);
 		break;
+		// Going to the iron bank.
 	case 'I':
 		do {
 			clearscr();
 			goBack = transactWithBank(pGD, pDebt, pSavings);
 		} while (goBack == 0);
 		break;
+		// Riding the wheelhouse.
 	case 'W':
 		cQuitGame = 'W';
 		break;
+		// Quitting the game.
 	case 'Q':
 		cQuitGame = 'Y';
 	}
