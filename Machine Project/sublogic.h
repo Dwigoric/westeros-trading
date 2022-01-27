@@ -2,6 +2,31 @@
 #include <time.h>
 
 /*
+	This function generates a random number within a given range.
+
+	@param nNum1 - The first number of the range.
+	@param nNum2 - The second number of the range.
+
+	@return A random number between the two numbers, inclusively.
+*/
+int getRandomNumber(int nNum1, int nNum2) {
+	int nDiff, nRandNum;
+
+	if (nNum1 == nNum2) nRandNum = nNum1;
+	// In case the range is from high to low, interchange the numbers.
+	else if (nNum1 > nNum2) {
+		nDiff = nNum1 - nNum2;
+		nNum1 -= nDiff;
+		nNum2 += nDiff;
+	}
+	else nDiff = nNum2 - nNum1;
+
+	if (nNum1 != nNum2) nRandNum = rand() % (nDiff + 1) + nNum1;
+
+	return nRandNum;
+}
+
+/*
 	This function determines whether a merchant shows up to prompt user to increase capacity of wheelhouse by 50.
 
 	@return 1 if merchant shows up, otherwise 0.
@@ -9,9 +34,8 @@
 int allowWheelhouseUpgrade() {
 	int willAllowUpgrade = 0;
 
-	// To avoid predictability of results, the rand() function is seeded every run.
-	srand(time(NULL));
-	if (rand() % 100 <= 9) willAllowUpgrade = 1;
+	// Determine whether the random number from 1 to 100 is 1-10.
+	if (getRandomNumber(1, 100) <= 10) willAllowUpgrade = 1;
 
 	return willAllowUpgrade;
 }
@@ -30,40 +54,33 @@ int arraySummation(int nArray[8]) {
 /*
 	Determines whether the item is on sale.
 
-	@param nIndex - The inventory array-based index of the item.
-	@param nPrice - The price of the item.
+	@param nTradingPartner - The trading partner.
+	@param nItem - The item index on the inventory array.
 
 	@return 1 if the item is in sale, otherwise 0 if not.
 */
-int isSpecialPrice(int nIndex, int nPrice) {
+int isSpecialPrice(int nTradingPartner, int nItem) {
 	int nSale = 0;
 
-	// Depending on the nIndex which corresponds to the item, determine if the price is in the special price range.
-	switch (nIndex) {
-	case 0:
-		if (nPrice >= 100 && nPrice <= 150) nSale = 1;
-		break;
+	// Depending on the trading partner, determine if the item is in the special price range.
+	switch (nTradingPartner) {
 	case 1:
-		if (nPrice >= 200 && nPrice <= 250) nSale = 1;
+		if (nItem == 1) nSale = 1;
 		break;
 	case 2:
-		if (nPrice >= 300 && nPrice <= 350) nSale = 1;
+		if (nItem == 3) nSale = 1;
 		break;
 	case 3:
-		if (nPrice >= 400 && nPrice <= 450) nSale = 1;
+		if (nItem == 2 || nItem == 5) nSale = 1;
 		break;
 	case 4:
-		if (nPrice >= 500 && nPrice <= 550) nSale = 1;
+		if (nItem == 4) nSale = 1;
 		break;
 	case 5:
-		if (nPrice >= 600 && nPrice <= 650) nSale = 1;
+		if (nItem >= 6 && nItem <= 7) nSale = 1;
 		break;
 	case 6:
-		if (nPrice >= 700 && nPrice <= 750) nSale = 1;
-		break;
-	case 7:
-		if (nPrice >= 800 && nPrice <= 850) nSale = 1;
-		break;
+		if (nItem == 0) nSale = 1;
 	}
 
 	return nSale;
@@ -138,91 +155,18 @@ int isValidBankAction(char cAction) {
 }
 
 /*
-	Function for retrieving the cost of an item depending on the trading partner.
+	This function randomizes the costs for each item.
 
 	@param nTradingPartner - The trading partner.
-	@param nItem - The item to get the cost of.
-	@param nAmount - Amount of items.
-
-	@return The cost of the item. If one of the parameters is invalid, the returned value is 0.
+	@param pPrices - The pointer to the array of prices.
 */
-int getCost(int nTradingPartner, int nItem, int nAmount) {
-	int nCost = 0;
+void randomizeCosts(int nTradingPartner, int (*pPrices)[8]) {
+	int nCounter = 0;
 
-	// Subtract 1 from nItem since it will be used as the array index.
-	nItem -= 1;
-
-	// Use arrays for easier reference.
-	int
-	nWinterfell[8] = {
-		WINTERFELL_SWEET_BEET,
-		WINTERFELL_TIMBER,
-		WINTERFELL_INTRICATE_LACE,
-		WINTERFELL_INTOXICATING_PERFUME,
-		WINTERFELL_PALE_AMBER_WINE,
-		WINTERFELL_MYRISH_EYE,
-		WINTERFELL_QOHORIK_TAPESTRY,
-		WINTERFELL_VALYRIAN_STEEL
-	},
-	nLys[8] = {
-		LYS_SWEET_BEET,
-		LYS_TIMBER,
-		LYS_INTRICATE_LACE,
-		LYS_INTOXICATING_PERFUME,
-		LYS_PALE_AMBER_WINE,
-		LYS_MYRISH_EYE,
-		LYS_QOHORIK_TAPESTRY,
-		LYS_VALYRIAN_STEEL
-	},
-	nMyr[8] = {
-		MYR_SWEET_BEET,
-		MYR_TIMBER,
-		MYR_INTRICATE_LACE,
-		MYR_INTOXICATING_PERFUME,
-		MYR_PALE_AMBER_WINE,
-		MYR_MYRISH_EYE,
-		MYR_QOHORIK_TAPESTRY,
-		MYR_VALYRIAN_STEEL
-	},
-	nPentos[8] = {
-		PENTOS_SWEET_BEET,
-		PENTOS_TIMBER,
-		PENTOS_INTRICATE_LACE,
-		PENTOS_INTOXICATING_PERFUME,
-		PENTOS_PALE_AMBER_WINE,
-		PENTOS_MYRISH_EYE,
-		PENTOS_QOHORIK_TAPESTRY,
-		PENTOS_VALYRIAN_STEEL
-	},
-	nQohor[8] = {
-		QOHOR_SWEET_BEET,
-		QOHOR_TIMBER,
-		QOHOR_INTRICATE_LACE,
-		QOHOR_INTOXICATING_PERFUME,
-		QOHOR_PALE_AMBER_WINE,
-		QOHOR_MYRISH_EYE,
-		QOHOR_QOHORIK_TAPESTRY,
-		QOHOR_VALYRIAN_STEEL
-	},
-	nVolantis[8] = {
-		VOLANTIS_SWEET_BEET,
-		VOLANTIS_TIMBER,
-		VOLANTIS_INTRICATE_LACE,
-		VOLANTIS_INTOXICATING_PERFUME,
-		VOLANTIS_PALE_AMBER_WINE,
-		VOLANTIS_MYRISH_EYE,
-		VOLANTIS_QOHORIK_TAPESTRY,
-		VOLANTIS_VALYRIAN_STEEL
-	};
-
-	switch (nTradingPartner) {
-	case 1: nCost = nWinterfell[nItem]; break;
-	case 2: nCost = nLys[nItem]; break;
-	case 3: nCost = nMyr[nItem]; break;
-	case 4: nCost = nPentos[nItem]; break;
-	case 5: nCost = nQohor[nItem]; break;
-	case 6: nCost = nVolantis[nItem]; break;
+	while (nCounter < 8) {
+		(*pPrices)[nCounter] = (nCounter + 1) * 100;
+		if (isSpecialPrice(nTradingPartner, nCounter)) (*pPrices)[nCounter] += getRandomNumber(0, 50);
+		else (*pPrices)[nCounter] += getRandomNumber(80, 100);
+		nCounter++;
 	}
-
-	return nCost * nAmount;
 }

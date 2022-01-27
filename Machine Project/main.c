@@ -4,8 +4,8 @@
 	Last modified: January 26, 2022 @ 8:05 AM
 */
 
-#include "display.h"
 #include <math.h>
+#include "display.h"
 
 /*
 	The function used when the user wants to buy a trading partner's goods and wares.
@@ -20,13 +20,13 @@
 
 	@return 1 if user wants to go back, 0 if not.
 */
-int buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
+int buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8], int nPrices[8]) {
 	int nCost, nItem, nAmount, goBack = 0;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
 	displayWideDivider();
-	displayPartnerSales(nTradingPartner, *pInventory);
+	displayPartnerSales(nTradingPartner, *pInventory, nPrices);
 	displayTrading(nDays, *pGD, fDebt, fSavings, nCapacity, *pInventory);
 
 	// Ask user what they want to buy.
@@ -57,7 +57,7 @@ int buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, 
 	} while (nAmount < 1 || nAmount > nCapacity - (*pInventory)[nItem - 1]);
 
 	if (nItem >= 1 && nItem <= 8) {
-		nCost = getCost(nTradingPartner, nItem, nAmount);
+		nCost = nPrices[nItem - 1] * nAmount;
 		printf("\nThat item costs %d Golden Dragons.", nCost);
 		if (*pGD < nCost) printf("\nYou do not have enough Golden Dragons.");
 		else do {
@@ -100,19 +100,24 @@ int buy(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, 
 /*
 	The function used when the user wants to sell their goods and wares to the trading partner.
 
+	@param nDays - The amount of days left.
 	@param nTradingPartner - The trading partner.
+	@param nCapacity - Capacity of the wheelhouse.
 	@param pGD - Pointer to the memory address of the variable holding the amount of Golden Dragons the user has.
+	@param fDebt - Debt to the Iron Bank.
+	@param fSavings - GDs stored in the Iron Bank.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
+	@param nPrices - The array of the prices.
 
 	@return 1 if user wants to go back, 0 if not.
 */
-int sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8]) {
+int sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt, float fSavings, int (*pInventory)[8], int nPrices[8]) {
 	int nCost, nAmount, nItem, goBack = 0;
 	char cChoice = 'N';
 
 	// Display goods, wares, and costs.
 	displayWideDivider();
-	displayPartnerSales(nTradingPartner, *pInventory);
+	displayPartnerSales(nTradingPartner, *pInventory, nPrices);
 	displayTrading(nDays, *pGD, fDebt, fSavings, nCapacity, *pInventory);
 
 	// Ask user what they want to sell.
@@ -143,7 +148,7 @@ int sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 	} while (nAmount < 0 || nAmount > (*pInventory)[nItem - 1]);
 
 	if (nItem >= 1 && nItem <= 8) {
-		nCost = getCost(nTradingPartner, nItem, nAmount);
+		nCost = nPrices[nItem - 1] * nAmount;
 		printf("\nThe trading partner is willing to trade %d GDs for that item.", nCost);
 		if ((*pInventory)[nItem - 1] == 0) printf("\nYou do not have that item in your wheelhouse.");
 		else do {
@@ -406,17 +411,18 @@ void promptWheelhouseUpgrade(int nDays, float* pGD, float* pDebt, float* pSaving
 	@param pSavings - Pointer to the savings variable's memory address.
 	@param pCapacity - Pointer to the memory address of the variable holding the wheelhouse capacity.
 	@param pInventory - Pointer to the memory address of the variable holding the array of the player inventory.
+	@param nPrices - The array of the prices of each item.
 
 	@return 'Y' if the user wants to quit the game, 'N' if the day continues, 'W' if the user wants to ride the wheelhouse.
 */
-char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8]) {
+char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8], int nPrices[8]) {
 	int goBack;
 	char cAction, cQuitGame = 'N';
 
 	clearscr();
 
 	displayWideDivider();
-	displayPartnerSales(nTradingPartner, *pInventory);
+	displayPartnerSales(nTradingPartner, *pInventory, nPrices);
 	displayTrading(nDays, *pGD, *pDebt, *pSavings, *pCapacity, *pInventory);
 
 	printf("What would you like to do?\n");
@@ -461,14 +467,14 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 	case 'B':
 		do {
 			clearscr();
-			goBack = buy(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
+			goBack = buy(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory, nPrices);
 		} while (goBack == 0 && arraySummation(*pInventory) < *pCapacity);
 		break;
 		// Selling items.
 	case 'S':
 		do {
 			clearscr();
-			goBack = sell(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory);
+			goBack = sell(nDays, nTradingPartner, *pCapacity, pGD, *pDebt, *pSavings, pInventory, nPrices);
 		} while (goBack == 0 && arraySummation(*pInventory) > 0);
 		break;
 		// Going to the iron bank.
@@ -503,7 +509,8 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 	@return 'W' if the user rode the wheelhouse, 'Y' if the user wants to quit the game.
 */
 char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapacity, int (*pInventory)[8]) {
-	int nTradingPartner;
+	int nTradingPartner,
+		nPrices[8];
 	char cQuitGame = 'N'; // cQuitGame == 'N' means user has not quit the game (default), otherwise this is 'Y'
 
 	clearscr();
@@ -531,8 +538,10 @@ char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapaci
 	// If user has not yet quit the game and lucky to meet the merchant for wheelhouse upgrade.
 	if (cQuitGame == 'N' && allowWheelhouseUpgrade()) promptWheelhouseUpgrade(nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
 
+	if (cQuitGame == 'N') randomizeCosts(nTradingPartner, &nPrices);
+
 	// If user has not yet quit the game or ridden the Wheelhouse, continue the day.
-	while (cQuitGame == 'N') cQuitGame = continueDay(nTradingPartner, nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
+	while (cQuitGame == 'N') cQuitGame = continueDay(nTradingPartner, nDays, pGD, pDebt, pSavings, pCapacity, pInventory, nPrices);
 
 	return cQuitGame;
 }
@@ -586,6 +595,9 @@ char startGame() {
 */
 int main() {
 	char cAnotherGame;
+
+	// Seed the rand() function at program start.
+	srand(time(NULL));
 
 	// Display instructions and await user input.
 	displayInstructions();

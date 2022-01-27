@@ -1,5 +1,4 @@
 ﻿#include <stdio.h>
-#include "constants.h"
 #include "sublogic.h"
 
 /*
@@ -93,19 +92,11 @@ void displayOpeningScreen() {
 /*
 	A function used to display the wares, goods, and the prices of items for sale.
 
-	@param nSweetBeet - The price of sweet beet.
-	@param nTimber - The price of timber.
-	@param nIntricateLace - The price of intricate lace.
-	@param nIntoxicatingPerfume - The price of intoxicating perfume.
-	@param nPaleAmberWiner - The price of pale amber wine.
-	@param nMyrishEye - The price of myrish eye.
-	@param nQohorikTapestry - The price of qohorik tapestry.
-	@param nValyrianSteel - The price of valyrian steel.
+	@param nTradingPartner - The trading partner.
 	@param nInventory - The array of the inventory.
+	@param nPrices - The array of the prices.
 */
-void displayWaresAndGoods(int nSweetBeet, int nTimber, int nIntricateLace, int nIntoxicatingPerfume,
-						  int nPaleAmberWine, int nMyrishEye, int nQohorikTapestry, int nValyrianSteel,
-						  int nInventory[8])
+void displayWaresAndGoods(int nTradingPartner, int nInventory[8], int nPrices[8])
 {
 	displayWideDivider();
 	printf("ITEM\t\tWARES AND GOODS\t\t\tSELLING/BUYING PRICE\t\tOWNED\n");
@@ -114,14 +105,14 @@ void displayWaresAndGoods(int nSweetBeet, int nTimber, int nIntricateLace, int n
 	char onSale[2][9] = { "\t", "[!] SALE" };
 
 	// Display prices of each item and how much the user owns per item. Displays whether the item price is special.
-	printf("[1]\t\tSweet Beet\t\t\t%d %s\t\t\t%d\n", nSweetBeet, onSale[isSpecialPrice(0, nSweetBeet)], nInventory[0]);
-	printf("[2]\t\tTimber\t\t\t\t%d %s\t\t\t%d\n", nTimber, onSale[isSpecialPrice(1, nTimber)], nInventory[1]);
-	printf("[3]\t\tIntricate Lace\t\t\t%d %s\t\t\t%d\n", nIntricateLace, onSale[isSpecialPrice(2, nIntricateLace)], nInventory[2]);
-	printf("[4]\t\tIntoxicating Perfume\t\t%d %s\t\t\t%d\n", nIntoxicatingPerfume, onSale[isSpecialPrice(3, nIntoxicatingPerfume)], nInventory[3]);
-	printf("[5]\t\tPale Amber Wine\t\t\t%d %s\t\t\t%d\n", nPaleAmberWine, onSale[isSpecialPrice(4, nPaleAmberWine)], nInventory[4]);
-	printf("[6]\t\tMyrish Eye\t\t\t%d %s\t\t\t%d\n", nMyrishEye, onSale[isSpecialPrice(5, nMyrishEye)], nInventory[5]);
-	printf("[7]\t\tQohorik Tapestry\t\t%d %s\t\t\t%d\n", nQohorikTapestry, onSale[isSpecialPrice(6, nQohorikTapestry)], nInventory[6]);
-	printf("[8]\t\tValyrian Steel\t\t\t%d %s\t\t\t%d\n", nValyrianSteel, onSale[isSpecialPrice(7, nValyrianSteel)], nInventory[7]);
+	printf("[1]\t\tSweet Beet\t\t\t%d %s\t\t\t%d\n", nPrices[0], onSale[isSpecialPrice(nTradingPartner, 0)], nInventory[0]);
+	printf("[2]\t\tTimber\t\t\t\t%d %s\t\t\t%d\n", nPrices[1], onSale[isSpecialPrice(nTradingPartner, 1)], nInventory[1]);
+	printf("[3]\t\tIntricate Lace\t\t\t%d %s\t\t\t%d\n", nPrices[2], onSale[isSpecialPrice(nTradingPartner, 2)], nInventory[2]);
+	printf("[4]\t\tIntoxicating Perfume\t\t%d %s\t\t\t%d\n", nPrices[3], onSale[isSpecialPrice(nTradingPartner, 3)], nInventory[3]);
+	printf("[5]\t\tPale Amber Wine\t\t\t%d %s\t\t\t%d\n", nPrices[4], onSale[isSpecialPrice(nTradingPartner, 4)], nInventory[4]);
+	printf("[6]\t\tMyrish Eye\t\t\t%d %s\t\t\t%d\n", nPrices[5], onSale[isSpecialPrice(nTradingPartner, 5)], nInventory[5]);
+	printf("[7]\t\tQohorik Tapestry\t\t%d %s\t\t\t%d\n", nPrices[6], onSale[isSpecialPrice(nTradingPartner, 6)], nInventory[6]);
+	printf("[8]\t\tValyrian Steel\t\t\t%d %s\t\t\t%d\n", nPrices[7], onSale[isSpecialPrice(nTradingPartner, 7)], nInventory[7]);
 }
 
 /*
@@ -129,8 +120,9 @@ void displayWaresAndGoods(int nSweetBeet, int nTimber, int nIntricateLace, int n
 
 	@param nTradingPartner - The trading partner.
 	@param nInventory - The array of the inventory.
+	@param nPrices - The array of the prices.
 */
-void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
+void displayPartnerSales(int nTradingPartner, int nInventory[8], int nPrices[8]) {
 	switch (nTradingPartner) {
 	case 1:
 		printf("\t\t    __    __ _       _             __      _ _ \n");
@@ -138,11 +130,6 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		printf("\t\t   \\ \\/  \\/ / | '_ \\| __/ _ \\ '__| |_ / _ \\ | |\n");
 		printf("\t\t    \\  /\\  /| | | | | ||  __/ |  |  _|  __/ | |\n");
 		printf("\t\t     \\/  \\/ |_|_| |_|\\__\\___|_|  |_|  \\___|_|_|\n");
-		displayWaresAndGoods(
-			WINTERFELL_SWEET_BEET, WINTERFELL_TIMBER, WINTERFELL_INTRICATE_LACE, WINTERFELL_INTOXICATING_PERFUME,
-			WINTERFELL_PALE_AMBER_WINE, WINTERFELL_MYRISH_EYE, WINTERFELL_QOHORIK_TAPESTRY, WINTERFELL_VALYRIAN_STEEL,
-			nInventory
-		);
 		break;
 	case 2:
 		printf("\t\t\t\t   __           \n");
@@ -151,11 +138,6 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		printf("\t\t\t\t/ /__| |_| \\__ \\\n");
 		printf("\t\t\t\t\\____/\\__, |___/\n");
 		printf("\t\t\t\t      |___/     \n");
-		displayWaresAndGoods(
-			LYS_SWEET_BEET, LYS_TIMBER, LYS_INTRICATE_LACE, LYS_INTOXICATING_PERFUME,
-			LYS_PALE_AMBER_WINE, LYS_MYRISH_EYE, LYS_QOHORIK_TAPESTRY, LYS_VALYRIAN_STEEL,
-			nInventory
-		);
 		break;
 	case 3:
 		printf("\t\t\t\t  /\\/\\  _   _ _ __ \n");
@@ -163,11 +145,6 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		printf("\t\t\t\t/ /\\/\\ \\ |_| | |   \n");
 		printf("\t\t\t\t\\/    \\/\\__, |_|   \n");
 		printf("\t\t\t\t        |___/      \n");
-		displayWaresAndGoods(
-			MYR_SWEET_BEET, MYR_TIMBER, MYR_INTRICATE_LACE, MYR_INTOXICATING_PERFUME,
-			MYR_PALE_AMBER_WINE, MYR_MYRISH_EYE, MYR_QOHORIK_TAPESTRY, MYR_VALYRIAN_STEEL,
-			nInventory
-		);
 		break;
 	case 4:
 		printf("\t\t\t     ___           _            \n");
@@ -175,11 +152,6 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		printf("\t\t\t   / /_)/ _ \\ '_ \\| __/ _ \\/ __|\n");
 		printf("\t\t\t  / ___/  __/ | | | || (_) \\__ \\\n");
 		printf("\t\t\t  \\/    \\___|_| |_|\\__\\___/|___/\n");
-		displayWaresAndGoods(
-			PENTOS_SWEET_BEET, PENTOS_TIMBER, PENTOS_INTRICATE_LACE, PENTOS_INTOXICATING_PERFUME,
-			PENTOS_PALE_AMBER_WINE, PENTOS_MYRISH_EYE, PENTOS_QOHORIK_TAPESTRY, PENTOS_VALYRIAN_STEEL,
-			nInventory
-		);
 		break;
 	case 5:
 		printf("\t\t\t     ____      _                \n");
@@ -187,11 +159,6 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		printf("\t\t\t   //  / / _ \\| '_ \\ / _ \\| '__|\n");
 		printf("\t\t\t  / \\_/ / (_) | | | | (_) | |   \n");
 		printf("\t\t\t  \\___,_\\\\___/|_| |_|\\___/|_|   \n");
-		displayWaresAndGoods(
-			QOHOR_SWEET_BEET, QOHOR_TIMBER, QOHOR_INTRICATE_LACE, QOHOR_INTOXICATING_PERFUME,
-			QOHOR_PALE_AMBER_WINE, QOHOR_MYRISH_EYE, QOHOR_QOHORIK_TAPESTRY, QOHOR_VALYRIAN_STEEL,
-			nInventory
-		);
 		break;
 	case 6:
 		printf("\t\t\t             _             _   _     \n");
@@ -199,12 +166,9 @@ void displayPartnerSales(int nTradingPartner, int nInventory[8]) {
 		printf("\t\t\t \\ \\ / / _ \\| |/ _` | '_ \\| __| / __|\n");
 		printf("\t\t\t  \\ V / (_) | | (_| | | | | |_| \\__ \\\n");
 		printf("\t\t\t   \\_/ \\___/|_|\\__,_|_| |_|\\__|_|___/\n");
-		displayWaresAndGoods(
-			VOLANTIS_SWEET_BEET, VOLANTIS_TIMBER, VOLANTIS_INTRICATE_LACE, VOLANTIS_INTOXICATING_PERFUME,
-			VOLANTIS_PALE_AMBER_WINE, VOLANTIS_MYRISH_EYE, VOLANTIS_QOHORIK_TAPESTRY, VOLANTIS_VALYRIAN_STEEL,
-			nInventory
-		);
 	}
+
+	displayWaresAndGoods(nTradingPartner, nInventory, nPrices);
 }
 
 /*
