@@ -41,7 +41,7 @@ int arraySummation(int nArray[8]) {
 	Determines whether the item is on sale.
 
 	@param nTradingPartner - The trading partner.
-	@param nItem - The item index on the inventory array.
+	@param nItem - The item index on the inventory array.	
 
 	@return 1 if the item is in sale, otherwise 0 if not.
 */
@@ -131,6 +131,7 @@ int isValidBankAction(char cAction) {
 	case 'B':
 	case 'P':
 	case 'X':
+	case 'Q':
 		nValid = 1;
 		break;
 	default:

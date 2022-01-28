@@ -194,7 +194,7 @@ int sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 	@param nSavings - Pointer to the memory address of the variable holding the user's savings.
 	@param nDebt - Pointer to the memory address of the variable holding the user's debt to the bank.
 
-	@return 1 if user wants to go back, 0 if not.
+	@return 1 if user wants to go back, 2 if the user wants to quit the game, 0 to continue.
 */
 int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 	int goBack = 0;
@@ -214,7 +214,8 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 		case 'w': cAction = 'W'; break;
 		case 'b': cAction = 'B'; break;
 		case 'p': cAction = 'P'; break;
-		case 'x': cAction = 'X';
+		case 'x': cAction = 'X'; break;
+		case 'q': cAction = 'Q';
 		}
 
 		if (!isValidBankAction(cAction)) printf("\tInvalid input.");
@@ -344,6 +345,9 @@ int transactWithBank(float* pGD, float* pDebt, float* pSavings) {
 		break;
 	case 'X':
 		goBack = 1;
+		break;
+	case 'Q':
+		goBack = 2;
 	}
 
 	return goBack;
@@ -483,6 +487,7 @@ char continueDay(int nTradingPartner, int nDays, float* pGD, float* pDebt, float
 			clearscr();
 			goBack = transactWithBank(pGD, pDebt, pSavings);
 		} while (goBack == 0);
+		if (goBack == 2) cQuitGame = 'Y';
 		break;
 		// Riding the wheelhouse.
 	case 'W':

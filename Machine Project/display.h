@@ -232,5 +232,5 @@ void displayBankMenu(float fGD, float fSavings, float fDebt) {
 	printf("Savings\t\t\t%.2f\n", fSavings);
 	printf("Debt\t\t\t%.2f\n", fDebt);
 	displayWideDivider();
-	printf("[D]eposit GDs\n[W]ithdraw GDs\n[B]orrow GDs\n[P]ay Debt\n\n[X] Go Back\n");
+	printf("[D]eposit GDs\n[W]ithdraw GDs\n[B]orrow GDs\n[P]ay Debt\n[Q]uit Game\n\n[X] Go Back\n");
 }
