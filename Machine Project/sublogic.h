@@ -150,7 +150,7 @@ int isValidBankAction(char cAction) {
 void randomizeCosts(int nTradingPartner, int (*pPrices)[8]) {
 	int nCounter = 0;
 
-	while (nCounter < 8) {
+	if (isValidTradingPartner(nTradingPartner)) while (nCounter < 8) {
 		(*pPrices)[nCounter] = (nCounter + 1) * 100;
 		if (isSpecialPrice(nTradingPartner, nCounter)) (*pPrices)[nCounter] += getRandomNumber(0, 50);
 		else (*pPrices)[nCounter] += getRandomNumber(80, 100);
