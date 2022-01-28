@@ -536,7 +536,7 @@ char startDay(int nDays, float* pGD, float* pDebt, float* pSavings, int* pCapaci
 	clearscr();
 
 	// If user has not yet quit the game and lucky to meet the merchant for wheelhouse upgrade.
-	if (cQuitGame == 'N' && allowWheelhouseUpgrade()) promptWheelhouseUpgrade(nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
+	if (cQuitGame == 'N' && getRandomNumber(1, 100) <= 10) promptWheelhouseUpgrade(nDays, pGD, pDebt, pSavings, pCapacity, pInventory);
 
 	if (cQuitGame == 'N') randomizeCosts(nTradingPartner, &nPrices);
 

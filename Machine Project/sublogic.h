@@ -27,20 +27,6 @@ int getRandomNumber(int nNum1, int nNum2) {
 }
 
 /*
-	This function determines whether a merchant shows up to prompt user to increase capacity of wheelhouse by 50.
-
-	@return 1 if merchant shows up, otherwise 0.
-*/
-int allowWheelhouseUpgrade() {
-	int willAllowUpgrade = 0;
-
-	// Determine whether the random number from 1 to 100 is 1-10.
-	if (getRandomNumber(1, 100) <= 10) willAllowUpgrade = 1;
-
-	return willAllowUpgrade;
-}
-
-/*
 	Function to get summation of an integer array with 8 values.
 
 	@param nArray - The array of integers with 8 values.
