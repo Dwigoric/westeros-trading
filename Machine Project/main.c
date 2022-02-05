@@ -5,6 +5,7 @@
 */
 
 #include <math.h>
+#include <time.h>
 #include "display.h"
 
 /*

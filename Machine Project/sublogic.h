@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <time.h>
 
 /*
 	This function generates a random number within a given range.
@@ -95,7 +94,7 @@ int isValidTradingPartner(int nTradingPartner) {
 
 	@return 1 if the action is valid, otherwise 0.
 */
-int isValidAction(int cAction) {
+int isValidAction(char cAction) {
 	int nValid;
 
 	// B = buy, S = sell, W = wheelhouse, I = bank, Q = quit
