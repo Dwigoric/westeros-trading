@@ -130,7 +130,7 @@ int sell(int nDays, int nTradingPartner, int nCapacity, float* pGD, float fDebt,
 			scanf(" %*s");
 		}
 
-		if (nItem < 0 || nItem > 8) printf("\tInvalid input.");
+		if (nItem < 0 || nItem > 8) printf("\tInvalid input.\n");
 	} while (nItem < 0 || nItem > 8);
 
 	// Ask user how many they want to buy.
